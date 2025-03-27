@@ -5,4 +5,4 @@ This package implements a Model Context Protocol (MCP) server that acts as an AI
 It exposes a tool to generate Product Requirements Documents (PRDs) based on codebase analysis.
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
