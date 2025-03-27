@@ -12,7 +12,7 @@ A Model Context Protocol server that acts as an AI Software Architect. It analyz
 
 ## Prerequisites
 
-- Python 3.10 or higher
+- Python 3.9 or higher
 - Google API key for Gemini Pro (get one from [Google AI Studio](https://aistudio.google.com/app/apikey))
 
 ## Installation
@@ -219,24 +219,31 @@ You can also create a custom slash command for easier access:
 
 ## Building and Publishing
 
-To build and publish the package to PyPI:
+To build and publish the package to PyPI using uv:
 
-1. **Install build tools:**
+1. **Build the package:**
    ```bash
-   uv pip install build twine
-   ```
-
-2. **Build the package:**
-   ```bash
-   python -m build
+   uv build --no-sources
    ```
    This creates distribution packages in the `dist/` directory.
 
-3. **Upload to PyPI:**
+2. **Publish to TestPyPI** (optional but recommended):
    ```bash
-   python -m twine upload dist/*
+   # Set your TestPyPI token
+   export UV_PUBLISH_TOKEN=your_testpypi_token
+   
+   # Publish to TestPyPI
+   uv publish --publish-url https://test.pypi.org/legacy/
    ```
-   You'll need a PyPI account and access credentials.
+
+3. **Publish to PyPI:**
+   ```bash
+   # Set your PyPI token
+   export UV_PUBLISH_TOKEN=your_pypi_token
+   
+   # Publish to PyPI
+   uv publish
+   ```
 
 ### Release Steps Summary
 
@@ -249,12 +256,12 @@ Here's a summary of all steps to prepare and release a new version:
 
 2. Make sure tests pass:
    ```bash
-   python -m pytest
+   uv run pytest
    ```
 
 3. Build the package:
    ```bash
-   python -m build
+   uv build --no-sources
    ```
 
 4. Test the package locally:
@@ -263,17 +270,13 @@ Here's a summary of all steps to prepare and release a new version:
    mkdir -p /tmp/test-architect
    cd /tmp/test-architect
    
-   # Install from the local build
-   pip install /path/to/your/dist/mcp_server_architect-*.whl
-   
-   # Test the command
-   export GOOGLE_API_KEY="your_api_key"
-   mcp-server-architect --version
+   # Test installing from the built package
+   uv run --with-pin /path/to/your/dist/mcp_server_architect-*.whl --no-project -- python -c "from mcp_server_architect import __version__; print(__version__)"
    ```
 
-5. Upload to PyPI:
+5. Publish to PyPI:
    ```bash
-   python -m twine upload dist/*
+   uv publish
    ```
 
 6. Verify the installation:
