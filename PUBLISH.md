@@ -62,8 +62,8 @@ This document outlines the complete process for building, testing, and publishin
 
 4. **Publish to PyPI**
    ```bash
-   # Set PyPI token
-   export UV_PUBLISH_TOKEN=your_pypi_token
+   # Load PyPI token from .env
+   source .env
    
    # Publish to PyPI
    uv publish
