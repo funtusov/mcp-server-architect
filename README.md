@@ -12,7 +12,7 @@ A Model Context Protocol server that acts as an AI Software Architect. It analyz
 
 ## Prerequisites
 
-- Python 3.9 or higher
+- Python 3.10 or higher
 - Google API key for Gemini Pro (get one from [Google AI Studio](https://aistudio.google.com/app/apikey))
 
 ## Installation

@@ -9,7 +9,7 @@ import logging
 import argparse
 from dotenv import load_dotenv
 
-from mcp import MCP, Config, run
+from mcp.server.fastmcp import FastMCP
 from mcp_server_architect.core import ArchitectAI
 from mcp_server_architect.version import __version__
 
@@ -62,28 +62,24 @@ def main():
         logger.error("GEMINI_API_KEY environment variable is required")
         sys.exit(1)
         
-    # Set GOOGLE_API_KEY for Gemini SDK (required by the SDK)
-    os.environ["GOOGLE_API_KEY"] = api_key
+    # Store the API key for use with Gemini Client
     
     # Set Gemini model from arguments or environment
     os.environ["GEMINI_MODEL"] = args.gemini_model
     logger.info(f"Using Gemini model: {os.environ['GEMINI_MODEL']}")
     
-    # Create MCP server configuration
-    config = Config(
-        name="ArchitectAI",
-        description="AI Software Architect that generates PRDs and design documents based on codebase analysis",
-    )
-    
     # Create MCP server instance
-    server = MCP(config)
+    server = FastMCP(
+        "ArchitectAI",
+        description="AI Software Architect that generates PRDs and design documents based on codebase analysis"
+    )
     
     # Register the ArchitectAI class and its methods
     server.register(ArchitectAI())
     
     # Start the MCP server
     logger.info("Starting ArchitectAI MCP server...")
-    run(server)
+    server.run()
 
 
 if __name__ == "__main__":

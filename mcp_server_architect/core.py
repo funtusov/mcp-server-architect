@@ -6,7 +6,7 @@ Core classes for the Architect AI MCP Server.
 import os
 import logging
 import google.generativeai as genai
-from mcp import Tool, Parameter, ParameterType
+from mcp.server.fastmcp import FastMCP
 from mcp_server_architect.file_context import FileContextBuilder
 
 # Configure logging
@@ -15,9 +15,7 @@ logger = logging.getLogger(__name__)
 
 # Configure Google Generative AI with API key
 api_key = os.getenv("GEMINI_API_KEY")
-if api_key:
-    genai.configure(api_key=api_key)
-else:
+if not api_key:
     logger.warning("GEMINI_API_KEY environment variable is not set. Gemini API calls will fail.")
 
 # Get the default model from environment
@@ -30,23 +28,7 @@ class ArchitectAI:
     Generates Product Requirements Documents (PRDs) based on codebase analysis.
     """
 
-    @Tool(
-        description="Generate a Product Requirements Document (PRD) or High-Level Design based on codebase analysis",
-        parameters=[
-            Parameter(
-                name="task_description",
-                type=ParameterType.STRING,
-                description="Detailed description of the programming task or feature to implement",
-                required=True,
-            ),
-            Parameter(
-                name="codebase_path",
-                type=ParameterType.STRING,
-                description="Local file path to the codebase directory to analyze",
-                required=True,
-            ),
-        ],
-    )
+    # The tool will be registered with the FastMCP server in __main__.py
     def generate_prd(self, task_description: str, codebase_path: str) -> str:
         """
         Generate a PRD or high-level design document based on codebase analysis and task description.
@@ -70,7 +52,8 @@ class ArchitectAI:
             prompt = self._create_prompt(task_description, code_context)
             
             # Call Gemini API
-            model = genai.GenerativeModel(DEFAULT_MODEL)
+            client = genai.Client(api_key=api_key)
+            model = client.get_model(DEFAULT_MODEL)
             response = model.generate_content(prompt)
             
             # Process and return the response

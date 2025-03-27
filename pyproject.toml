@@ -4,15 +4,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mcp-server-architect"
-version = "0.1.1"
+version = "0.1.2"
 description = "AI Software Architect MCP Server that generates PRDs based on codebase analysis"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
     {name = "ArchitectAI", email = "example@example.com"},
 ]
 dependencies = [
-    "mcp-sdk[cli]>=0.7.0",
+    "mcp[cli]",
     "google-generativeai>=0.3.0",
     "python-dotenv>=1.0.0",
 ]
@@ -21,7 +21,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
@@ -43,7 +42,7 @@ mcp-server-architect = "mcp_server_architect.__main__:main"
 
 [tool.black]
 line-length = 100
-target-version = ["py39"]
+target-version = ["py310"]
 
 [tool.isort]
 profile = "black"
