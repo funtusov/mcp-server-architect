@@ -3,10 +3,11 @@
 Core classes for the Architect AI MCP Server.
 """
 
-import os
 import logging
+import os
+
 import google.generativeai as genai
-from mcp.server.fastmcp import FastMCP
+
 from mcp_server_architect.file_context import FileContextBuilder
 
 # Configure logging
@@ -32,45 +33,45 @@ class ArchitectAI:
     def generate_prd(self, task_description: str, codebase_path: str) -> str:
         """
         Generate a PRD or high-level design document based on codebase analysis and task description.
-        
+
         Args:
             task_description (str): Detailed description of the programming task
             codebase_path (str): Path to the local codebase directory
-            
+
         Returns:
             str: The generated PRD or design document
         """
         logger.info(f"Generating PRD for task: {task_description[:50]}...")
         logger.info(f"Analyzing codebase at: {codebase_path}")
-        
+
         try:
             # Build context from codebase files
             context_builder = FileContextBuilder(codebase_path)
             code_context = context_builder.build_context()
-            
+
             # Create the prompt for Gemini
             prompt = self._create_prompt(task_description, code_context)
-            
+
             # Call Gemini API
             client = genai.Client(api_key=api_key)
             model = client.get_model(DEFAULT_MODEL)
             response = model.generate_content(prompt)
-            
+
             # Process and return the response
             return self._process_response(response)
-            
+
         except Exception as e:
             logger.error(f"Error generating PRD: {str(e)}", exc_info=True)
             return f"Error generating PRD: {str(e)}"
-    
+
     def _create_prompt(self, task_description: str, code_context: str) -> str:
         """
         Create a comprehensive prompt for the Gemini model.
-        
+
         Args:
             task_description (str): The task description
             code_context (str): The extracted code context
-            
+
         Returns:
             str: The formatted prompt
         """
@@ -96,21 +97,20 @@ class ArchitectAI:
         
         Format your response in markdown. Be concise but comprehensive.
         """
-    
+
     def _process_response(self, response) -> str:
         """
         Process the response from the Gemini model.
-        
+
         Args:
             response: The response from the Gemini model
-            
+
         Returns:
             str: The processed response
         """
         # Extract the text from the response
         if hasattr(response, "text"):
             return response.text
-        elif hasattr(response, "parts"):
+        if hasattr(response, "parts"):
             return "".join(part.text for part in response.parts)
-        else:
-            return str(response)
+        return str(response)

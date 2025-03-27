@@ -28,3 +28,6 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+# Temporary files and test directories
+tmp/
