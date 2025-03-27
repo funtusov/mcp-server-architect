@@ -9,7 +9,7 @@ description = "AI Software Architect MCP Server that generates PRDs based on cod
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    {name = "ArchitectAI", email = "example@example.com"},
+    {name = "Greg Funtusov"},
 ]
 dependencies = [
     "mcp[cli]",

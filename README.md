@@ -26,7 +26,7 @@ The simplest way to install and use the server is with `uv` package manager:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # No installation needed - run directly with uvx (one-liner)
-GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
 ```
 
 ### Installation with pip
@@ -40,16 +40,17 @@ pip install mcp-server-architect
 After installation, you can run it as a command:
 
 ```bash
-GEMINI_API_KEY=your_api_key_here mcp-server-architect
+env GEMINI_API_KEY=your_api_key_here mcp-server-architect
 ```
 
 ### API Key Requirements
 
 This server requires a Gemini API key for accessing the Google Gemini model. You can obtain one from [Google AI Studio](https://aistudio.google.com/app/apikey). The API key can be provided in multiple ways:
 
-1. As an environment variable inline: `GEMINI_API_KEY=your_key mcp-server-architect`
-2. By setting it before running: `export GEMINI_API_KEY=your_key`
-3. Through a .env file in the current directory
+1. As an environment variable with the env prefix: `env GEMINI_API_KEY=your_key mcp-server-architect`
+2. Through a .env file in the current directory with `GEMINI_API_KEY=your_key`
+
+**Note:** Setting the environment variable with `export` before running may not work reliably. The `env` command prefix is the recommended approach.
 
 ### Development Installation
 
@@ -70,12 +71,12 @@ If you're developing or modifying the code:
 
 3. **Run in Development Mode:**
    ```bash
-   GEMINI_API_KEY=your_api_key_here python -m mcp_server_architect
+   env GEMINI_API_KEY=your_api_key_here python -m mcp_server_architect
    ```
 
 4. **Run with MCP Inspector for Development:**
    ```bash
-   GEMINI_API_KEY=your_api_key_here npx @modelcontextprotocol/inspector python -m mcp dev --with-editable . mcp_server_architect/__main__.py
+   env GEMINI_API_KEY=your_api_key_here npx @modelcontextprotocol/inspector python -m mcp dev --with-editable . mcp_server_architect/__main__.py
    ```
 
 ## Running and Using the Server
@@ -86,11 +87,10 @@ The easiest way to run the server is with `uvx`, passing your Gemini API key:
 
 ```bash
 # As a one-liner (recommended)
-GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
 
-# Or export it first
-export GEMINI_API_KEY="your_api_key_here"
-uvx mcp-server-architect
+# Alternatively, use a .env file in the current directory
+# with GEMINI_API_KEY=your_api_key_here
 ```
 
 ### Using with MCP Inspector
@@ -98,24 +98,24 @@ uvx mcp-server-architect
 To debug or test the server with the MCP Inspector:
 
 ```bash
-GEMINI_API_KEY=your_api_key_here npx @modelcontextprotocol/inspector uvx mcp-server-architect
+env GEMINI_API_KEY=your_api_key_here npx @modelcontextprotocol/inspector uvx mcp-server-architect
 ```
 
 This will open an inspector interface (usually at http://localhost:8787) that allows you to test the server's tools interactively.
 
 ### Adding to Claude Code
 
-Claude Code supports MCP servers in various scopes. Here's how to add the ArchitectAI server with your Gemini API key:
+Claude Code supports MCP servers in various scopes. Here's how to add the Architect server with your Gemini API key:
 
 ```bash
 # Local scope (only available to you in the current project)
-claude mcp add architect -- GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+claude mcp add architect -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
 
 # Project scope (shared with everyone via .mcp.json)
-claude mcp add architect -s project -- GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+claude mcp add architect -s project -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
 
 # User scope (available to you across all projects)
-claude mcp add architect -s user -- GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+claude mcp add architect -s user -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
 ```
 
 > **Important:** Replace `your_api_key_here` with your actual Google API key for Gemini
@@ -139,8 +139,8 @@ For security, you may want to store your API key in a more secure way. You can:
    # Create a .env file (don't commit this!)
    echo "GEMINI_API_KEY=your_api_key_here" > .env
    
-   # Then use the dotenv command to load it
-   claude mcp add architect -- sh -c "source .env && exec uvx mcp-server-architect"
+   # Add to Claude Code with the env prefix
+   claude mcp add architect -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
    ```
 
 2. **Use your OS's secure credential storage:**
@@ -177,7 +177,7 @@ This MCP server exposes the following resources and tools:
 
 ### Tools
 
-- **`ArchitectAI::generate_prd`**: Generates a Product Requirements Document based on codebase analysis
+- **`Architect::generate_prd`**: Generates a Product Requirements Document based on codebase analysis
   - Parameters:
     - `task_description` (required): Detailed description of the programming task or feature to implement
     - `codebase_path` (required): Local file path to the codebase directory to analyze
@@ -187,7 +187,7 @@ This MCP server exposes the following resources and tools:
 After installation, you can use the tool in Claude Code by prompting:
 
 ```
-@ArchitectAI please generate a PRD for creating a new feature.
+@Architect please generate a PRD for creating a new feature.
 Task Description: "Create a user profile page that displays user information and activity history, with edit functionality."
 Codebase Path: "/path/to/your/local/project"
 ```
@@ -195,7 +195,7 @@ Codebase Path: "/path/to/your/local/project"
 Example with more specific technical details:
 
 ```
-@ArchitectAI generate a PRD for a new feature.
+@Architect generate a PRD for a new feature.
 Task Description: "Implement JWT authentication in a Flask application, with login, registration, and token refresh endpoints. Add middleware for protected routes and handle token expiration gracefully."
 Codebase Path: "/Users/username/projects/my-flask-app"
 ```
@@ -207,7 +207,7 @@ You can also create a custom slash command for easier access:
    mkdir -p .claude/commands
    ```
 
-2. Create a command file for ArchitectAI:
+2. Create a command file for Architect:
    ```bash
    echo "Generate a PRD for the following task:\n\nTask Description: \"$ARGUMENTS\"\nCodebase Path: \"`pwd`\"" > .claude/commands/prd.md
    ```

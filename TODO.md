@@ -1,8 +1,8 @@
-# Architect AI - MCP Server
+# Architect - MCP Server
 
 This project implements a Model Context Protocol (MCP) server that acts as an AI Software Architect.
 
-It exposes a tool (`ArchitectAI::generate_prd`) that takes:
+It exposes a tool (`Architect::generate_prd`) that takes:
 1.  A detailed description of a programming task.
 2.  A local path to a codebase directory.
 
@@ -81,17 +81,17 @@ Once the server is running (usually in direct execution mode for stable use, alt
 1.  **Install the Server into Claude:**
     Run the following command in your terminal (make sure your virtual environment is active):
     ```bash
-    uv run mcp install main.py --name ArchitectAI
+    uv run mcp install main.py --name Architect
     ```
     *   `uv run mcp install`: Uses `uv` to execute the `mcp install` command from the SDK.
     *   `main.py`: Specifies the entry point file for your server.
-    *   `--name ArchitectAI`: Gives the server a recognizable name within Claude.
+    *   `--name Architect`: Gives the server a recognizable name within Claude.
 
 2.  **Using the Tool in Claude:**
-    After installation, the `ArchitectAI::generate_prd` tool should become available to Claude. When you want Claude to use it, you would typically instruct it in your conversation, providing the necessary arguments. For example:
+    After installation, the `Architect::generate_prd` tool should become available to Claude. When you want Claude to use it, you would typically instruct it in your conversation, providing the necessary arguments. For example:
 
     ```
-    @ArchitectAI please generate a PRD for refactoring the authentication.
+    @Architect please generate a PRD for refactoring the authentication.
     Task Description: "Refactor the authentication logic currently in app/main.py. Create a dedicated auth module (e.g., app/auth.py) with functions for user login, registration, and token verification. Update the main app to use this new module. Ensure password hashing uses bcrypt."
     Codebase Path: "/path/to/your/local/project/sample_codebase"
     ```

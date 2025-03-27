@@ -11,7 +11,7 @@ import sys
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
-from mcp_server_architect.core import ArchitectAI
+from mcp_server_architect.core import Architect
 from mcp_server_architect.version import __version__
 
 # Configure logging
@@ -80,13 +80,13 @@ def main():
 
     # Create MCP server instance
     server = FastMCP(
-        "ArchitectAI",
+        "Architect",
         description="AI Software Architect that generates PRDs and design documents based on codebase analysis",
     )
 
-    # Register the ArchitectAI tool using decorator pattern
-    architect = ArchitectAI()
-    
+    # Register the Architect tool using decorator pattern
+    architect = Architect()
+
     @server.tool()
     def generate_prd(task_description: str, codebase_path: str) -> str:
         """
@@ -102,7 +102,7 @@ def main():
         return architect.generate_prd(task_description, codebase_path)
 
     # Start the MCP server
-    logger.info("Starting ArchitectAI MCP server...")
+    logger.info("Starting Architect MCP server...")
     server.run()
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Core classes for the Architect AI MCP Server.
+Core classes for the Architect MCP Server.
 """
 
 import logging
@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 # Configure Google Generative AI with API key
 api_key = os.getenv("GEMINI_API_KEY")
+logger.info(f"GEMINI_API_KEY environment check: {'Set' if api_key else 'Not set'}")
 if not api_key:
     logger.warning("GEMINI_API_KEY environment variable is not set. Gemini API calls will fail.")
 
@@ -23,7 +24,7 @@ if not api_key:
 DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro-exp-03-25")
 
 
-class ArchitectAI:
+class Architect:
     """
     MCP server that acts as an AI Software Architect.
     Generates Product Requirements Documents (PRDs) based on codebase analysis.

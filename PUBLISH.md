@@ -81,21 +81,13 @@ This document outlines the complete process for building, testing, and publishin
    git push origin main
    ```
 
-6. **Verify Installation**
+6. **Verify Package on PyPI**
    ```bash
-   # In a fresh environment, verify the package installs correctly
-   uvx mcp-server-architect --version
+   # Check if the package with the correct version is available on PyPI
+   curl -s "https://pypi.org/pypi/mcp-server-architect/json" | grep -o '"version":"'$(grep -o '".*"' mcp_server_architect/version.py | sed 's/"//g')'"'
+   
+   # If the version is found, you should see output like: "version":"0.1.4"
    ```
-
-## Post-publish Tasks
-
-1. **Update Documentation** (if needed)
-   - Update any documentation sites
-   - Update examples
-
-2. **Announce Release** (if appropriate)
-   - Announce in relevant channels
-   - Update release notes
 
 ## Troubleshooting
 

@@ -12,6 +12,12 @@
 ## Publishing a New Version
 For a complete guide on building, testing, and publishing new versions, see [PUBLISH.md](PUBLISH.md) for detailed step-by-step instructions.
 
+## Committing Changes
+When committing changes:
+1. Use a succinct one-line commit message
+2. Don't include "Generated with Claude Code" or "Co-Authored-By" lines
+3. Run linter checks before committing
+
 ## UV Cheatsheet
 - Add dependency: `uv add <package>` or `uv add <package> --dev`
 - Remove dependency: `uv remove <package>` or `uv remove <package> --dev`

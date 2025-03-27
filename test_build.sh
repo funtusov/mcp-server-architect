@@ -52,7 +52,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from mcp_server_architect import __version__
 from mcp.server.fastmcp import FastMCP
-from mcp_server_architect.core import ArchitectAI
+from mcp_server_architect.core import Architect
 print(f'Successfully imported mcp-server-architect version {__version__}')
 print(f'GEMINI_API_KEY is ' + ('set' if os.getenv('GEMINI_API_KEY') else 'not set'))
 "
@@ -83,9 +83,9 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 try:
-    # Import the FastMCP server and ArchitectAI
+    # Import the FastMCP server and Architect
     from mcp.server.fastmcp import FastMCP
-    from mcp_server_architect.core import ArchitectAI
+    from mcp_server_architect.core import Architect
     
     logger.info("Successfully imported required modules")
     
@@ -98,12 +98,12 @@ try:
 
     # Create a FastMCP instance following the pattern in the fixed code
     server = FastMCP(
-        "TestArchitectAI",
-        description="Test instance of ArchitectAI"
+        "TestArchitect",
+        description="Test instance of Architect"
     )
     
     # Register the tool using the new approach
-    architect = ArchitectAI()
+    architect = Architect()
     
     @server.tool()
     def generate_prd(task_description: str, codebase_path: str) -> str:
@@ -112,7 +112,7 @@ try:
         """
         return architect.generate_prd(task_description, codebase_path)
     
-    logger.info("Successfully created FastMCP server with ArchitectAI tool")
+    logger.info("Successfully created FastMCP server with Architect tool")
     
     # Test a simple call to ensure API connection works
     # Don't need to run the full API call, just verify initialization works
