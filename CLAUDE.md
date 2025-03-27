@@ -9,15 +9,8 @@
 - Format: `ruff format .`
 - Fix lint issues: `ruff check --fix .`
 
-## Pre-publishing Checklist
-Before publishing a new version:
-1. Update version numbers in:
-   - `mcp_server_architect/version.py`
-   - `mcp_server_architect/__init__.py`
-   - `pyproject.toml`
-2. Run `./test_build.sh` to verify everything works
-3. Run `uv build --no-sources`
-4. Publish with `uv publish`
+## Publishing a New Version
+For a complete guide on building, testing, and publishing new versions, see [PUBLISH.md](PUBLISH.md) for detailed step-by-step instructions.
 
 ## UV Cheatsheet
 - Add dependency: `uv add <package>` or `uv add <package> --dev`
