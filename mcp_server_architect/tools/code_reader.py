@@ -9,8 +9,8 @@ import os
 from pydantic import BaseModel, Field
 from pydantic_ai import ModelRetry, RunContext
 
-from mcp_server_architect.types import ArchitectDependencies
 from mcp_server_architect.file_context import FileContextBuilder
+from mcp_server_architect.types import ArchitectDependencies
 
 # Configure logging
 logger = logging.getLogger(__name__)

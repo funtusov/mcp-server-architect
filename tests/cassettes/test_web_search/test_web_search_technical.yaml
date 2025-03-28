@@ -1,0 +1,109 @@
+interactions:
+- request:
+    body: '{"query": "PydanticAI agent pattern implementation example", "numResults":
+      2, "useAutoprompt": true, "contents": {"text": true}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '128'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - exa-py 1.9.1
+    method: POST
+    uri: https://api.exa.ai/search
+  response:
+    body:
+      string: "{\"requestId\":\"62edde17d132cdbf7f5933998c26fe44\",\"autopromptString\":\"PydanticAI
+        agent pattern implementation example\",\"resolvedSearchType\":\"neural\",\"results\":[{\"id\":\"https://medium.com/@kbdhunga/an-ai-search-agent-built-with-pydanticai-and-langgraph-frameworks-eea929dc665e\",\"title\":\"An
+        AI Search Agent Built with PydanticAI and LangGraph Frameworks\",\"url\":\"https://medium.com/@kbdhunga/an-ai-search-agent-built-with-pydanticai-and-langgraph-frameworks-eea929dc665e\",\"publishedDate\":\"2025-01-27T04:11:37.000Z\",\"author\":\"Kamal
+        Dhungana\",\"score\":0.35193878412246704,\"text\":\"An AI agent is an autonomous
+        software program designed to perceive its environment, make decisions, and
+        perform tasks to achieve specific goals without human intervention. These
+        agents can interact with users, other systems, or their surroundings, adapting
+        their actions based on the information they gather.\uE201\uE206 Pydantic AI
+        is a Python framework that simplifies the development of production-grade
+        applications utilizing generative AI. It integrates seamlessly with Pydantic,
+        a data validation library, to streamline the creation and management of AI
+        agents, particularly those powered by large language models (LLMs).\uE206
+        LangGraph is a library designed for building stateful, multi-actor applications
+        with LLMs.\uE204It enables developers to create agent and multi-agent workflows,
+        offering features like moderation, fault-tolerant scalability, persisted context,
+        and token-by-token streaming. LangGraph is particularly suitable for applications
+        requiring comprehensive control over agent workflows. In summary, while both
+        Pydantic AI and LangGraph facilitate the development of AI agents, Pydantic
+        AI focuses on integrating Pydantic for streamlined data validation in generative
+        AI applications, whereas LangGraph provides a robust framework for constructing
+        complex, stateful agent workflows with large\u2026\",\"image\":\"https://miro.medium.com/v2/da:true/resize:fit:1200/0*y8BPx7D6XZYRLyrX\",\"favicon\":\"https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19\"},{\"id\":\"https://github.com/intellectronica/building-effective-agents-with-pydantic-ai\",\"title\":\"GitHub
+        - intellectronica/building-effective-agents-with-pydantic-ai: Code examples
+        for Building Effective Agents ported and adapted to use Pydantic AI\",\"url\":\"https://github.com/intellectronica/building-effective-agents-with-pydantic-ai\",\"publishedDate\":\"2024-12-20T22:06:59.000Z\",\"author\":\"intellectronica\",\"score\":0.34611907601356506,\"text\":\"Building
+        Effective Agents with Pydantic AI \\n Code examples for the agentic AI patterns
+        discussed in the excellent article\\n Building Effective Agents \\nby Erik
+        Schluntz and Barry Zhang \\nof Anthropic, inspired, ported and adapted from
+        the\\n code samples \\nby the authors. \\n The examples rely on Pydantic AI
+        , an agentic AI\\norchestration library that is particularly well-suited for
+        implementing these patterns\\nwith clarity and precision. \\n These examples
+        complement the original code accompanying the article and hopefully\\nserve
+        a dual purpose, demonstrating both the foundational agentic AI patterns discussed\\nin
+        the article and the use of Pydantic AI. \\n Notebooks \\n \\n Basic Workflows
+        (chain, parallelize, route) \\n \U0001F4D6 \\n Orchestrator and Workers \\n
+        \U0001F4D6 \\n Evaluator and Optimizer \\n \U0001F4D6 \\n \\n Setup \\n \\n
+        \\n Copy dot.env to .env \\n \\n \\n Fill in the API keys for one or more
+        of your LLM provider(s) \\n \\n \\n Set AI_MODEL to the model you want to
+        use\\n(see https://ai.pydantic.dev/models/ for supported providers and models)
+        \\n For example: \\n OPENAI_API_KEY=sk-123456789\\nAI_MODEL=openai:gpt-4o\\n
+        \\n or \\n GEMINI_API_KEY=ABC-123_xyz\\nAI_MODEL=gemini-1.5-pro\\n \\n or
+        \\n ANTHROPIC_API_KEY=ABC-sk-123456789\\nAI_MODEL=claude-3-5-sonnet-latest\\n
+        \\n You can also omit the AI_MODEL variable, which will result in a random
+        model from all the models you have\\nAPI keys for being chosen (you can use
+        that to play with different models and compare). \\n \\n \\n You can optionally
+        set the LOGFIRE_TOKEN variable to instrument Pydantic AI and follow the agent
+        calls\\nwith Pydantic Logfire .\",\"image\":\"https://opengraph.githubassets.com/021cd8aaa6a79ea54786e7c51595712a8d03d1a512962e0f555a0faeebaf4c5b/intellectronica/building-effective-agents-with-pydantic-ai\",\"favicon\":\"https://github.com/fluidicon.png\"}],\"costDollars\":{\"total\":0.007,\"search\":{\"neural\":0.005},\"contents\":{\"text\":0.002}}}"
+    headers:
+      CF-RAY:
+      - 9279495cd9fdcfc7-MAD
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 28 Mar 2025 18:45:49 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=SpUQmosC%2FL1kL4KeFTircr6MP8SvWGSBxagYMBIYyMQRVqQ42CwssU4L7tBueJv5geSzfmrV5dj8Tog%2Bn4FNMlhNmEuTA3Yabg26YTF9Jiz8TaQcnlfvAJqPCvI%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      cf-cache-status:
+      - DYNAMIC
+      etag:
+      - W/"112c-689ED+RVyqkQBaEwB410jpmMhS0"
+      server-timing:
+      - cfL4;desc="?proto=TCP&rtt=15053&min_rtt=13976&rtt_var=6010&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2823&recv_bytes=1009&delivery_rate=207212&cwnd=190&unsent_bytes=0&cid=c49ce61aebf8c609&ts=1957&x=0"
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains
+      vary:
+      - Origin
+      x-powered-by:
+      - Express
+      x-ratelimit-limit:
+      - '200'
+      x-ratelimit-remaining:
+      - '198'
+      x-ratelimit-reset:
+      - '1743187550'
+    status:
+      code: 200
+      message: OK
+version: 1

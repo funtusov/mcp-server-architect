@@ -8,6 +8,7 @@ import os
 
 from pydantic_ai import Agent
 
+from mcp_server_architect.models import get_model_string
 from mcp_server_architect.tools.code_reader import code_reader
 from mcp_server_architect.tools.llm import llm
 from mcp_server_architect.tools.web_search import web_search
@@ -15,12 +16,6 @@ from mcp_server_architect.types import ArchitectDependencies
 
 # Configure logging
 logger = logging.getLogger(__name__)
-
-# Default model from environment
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro-exp-03-25")
-
-
-# ArchitectDependencies imported from mcp_server_architect.types
 
 
 class AgentManager:
@@ -46,6 +41,13 @@ class AgentManager:
             api_keys["gemini"] = gemini_key
         else:
             logger.warning("GEMINI_API_KEY environment variable is not set")
+        
+        # OpenAI API key
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if openai_key:
+            api_keys["openai"] = openai_key
+        else:
+            logger.warning("OPENAI_API_KEY environment variable is not set")
             
         # Web Search API key (if available) - using EXA_API_KEY
         web_search_key = os.getenv("EXA_API_KEY")
@@ -57,44 +59,30 @@ class AgentManager:
         
         return api_keys
 
-    def _create_agent(self, system_prompt: str) -> Agent:
+    def _create_agent(self, system_prompt: str, task: str = None) -> Agent:
         """
         Create a PydanticAI agent with the provided system prompt.
         
         Args:
             system_prompt: The system prompt for the agent
+            task: Optional task name to select the appropriate model
             
         Returns:
             A configured PydanticAI Agent
         """
-        # Set the API key in the environment for pydantic-ai to use
-        # This should be set by load_dotenv() earlier, but we set it explicitly here
-        # to ensure it's available for the GeminiModel
+        # Set API keys in environment for pydantic-ai to use
         if "gemini" in self.api_keys:
             os.environ["GEMINI_API_KEY"] = self.api_keys["gemini"]
+        if "openai" in self.api_keys:
+            os.environ["OPENAI_API_KEY"] = self.api_keys["openai"]
         
-        # Create a new agent with explicit provider and API key
-        from pydantic_ai.models.gemini import GeminiModel
-        from pydantic_ai.providers.google_gla import GoogleGLAProvider
+        # Get the appropriate model string for this task
+        model_string = get_model_string(task)
+        logger.info(f"Creating agent with model: {model_string}")
         
-        # Get the API key from environment or use from self.api_keys
-        gemini_key = self.api_keys.get("gemini")
-        if not gemini_key and "GEMINI_API_KEY" in os.environ:
-            gemini_key = os.environ["GEMINI_API_KEY"]
-            
-        if not gemini_key:
-            logger.error("No Gemini API key found in api_keys or environment")
-            raise ValueError("Gemini API key is required")
-            
-        # Initialize the model with explicit provider and API key
-        model = GeminiModel(
-            DEFAULT_MODEL,
-            provider=GoogleGLAProvider(api_key=gemini_key)
-        )
-        
-        # Create agent with the initialized model
+        # Create agent with the model string
         agent = Agent(
-            model,
+            model_string,
             deps_type=ArchitectDependencies,
             system_prompt=system_prompt,
         )
@@ -138,8 +126,8 @@ class AgentManager:
         You have access to tools to help with your task. Use them as needed.
         """
         
-        # Create the agent with appropriate tools
-        agent = self._create_agent(system_prompt)
+        # Create the agent with appropriate tools, specifying the task for model selection
+        agent = self._create_agent(system_prompt, task="generate_prd")
         
         try:
             # Prepare dependencies
@@ -189,8 +177,8 @@ class AgentManager:
         You have access to tools to help with your task. Use them as needed.
         """
         
-        # Create the agent with appropriate tools
-        agent = self._create_agent(system_prompt)
+        # Create the agent with appropriate tools, specifying the task for model selection
+        agent = self._create_agent(system_prompt, task="think")
         
         try:
             # Prepare dependencies - we don't have a codebase path for thinking, 

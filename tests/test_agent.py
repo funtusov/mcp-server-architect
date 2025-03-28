@@ -6,7 +6,6 @@ Test PydanticAI Agent functionality to debug our issue.
 import logging
 from dataclasses import dataclass
 
-import pytest
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
 
@@ -16,17 +15,17 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class TestDependencies:
-    """Test dependencies for agent."""
+class AgentDependencies:
+    """Dependencies for agent testing."""
     api_key: str
 
 
-class TestInput(BaseModel):
-    """Test input model."""
+class EchoInput(BaseModel):
+    """Input model for echo tool."""
     message: str = Field(..., description="Message to echo")
 
 
-async def test_tool(ctx: RunContext[TestDependencies], input_data: TestInput) -> str:
+async def echo_tool(ctx: RunContext[AgentDependencies], input_data: EchoInput) -> str:
     """
     Simple echo tool for testing.
     
@@ -43,7 +42,7 @@ async def test_tool(ctx: RunContext[TestDependencies], input_data: TestInput) ->
 def test_agent_api():
     """Test the PydanticAI Agent API to understand how it works."""
     # Create test dependencies
-    deps = TestDependencies(api_key="test-key")
+    deps = AgentDependencies(api_key="test-key")
     
     # Create a system prompt
     system_prompt = "You are a test agent."
@@ -51,7 +50,7 @@ def test_agent_api():
     # Create the agent with proper provider:model format
     agent = Agent(
         "test",  # Use the test model built into pydantic-ai
-        deps_type=TestDependencies,
+        deps_type=AgentDependencies,
         system_prompt=system_prompt
     )
     
@@ -62,11 +61,11 @@ def test_agent_api():
     try:
         # Method 1: add_tool()
         if hasattr(agent, "add_tool"):
-            agent.add_tool(test_tool)
+            agent.add_tool(echo_tool)
             logger.info("Added tool using add_tool()")
         # Method 2: register_tool()
         elif hasattr(agent, "register_tool"):
-            agent.register_tool(test_tool)
+            agent.register_tool(echo_tool)
             logger.info("Added tool using register_tool()")
         else:
             logger.error("Neither add_tool() nor register_tool() methods exist")
