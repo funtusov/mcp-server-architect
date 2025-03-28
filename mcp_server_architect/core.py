@@ -5,13 +5,16 @@ Core classes for the Architect MCP Server.
 
 import logging
 import os
+import time
+from typing import Any
 
-import google.generativeai as genai
+from google import genai
+from google.genai import errors as genai_errors
 
 from mcp_server_architect.file_context import FileContextBuilder
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Configure Google Generative AI with API key
@@ -53,16 +56,27 @@ class Architect:
             # Create the prompt for Gemini
             prompt = self._create_prompt(task_description, code_context)
 
-            # Call Gemini API
-            client = genai.Client(api_key=api_key)
-            model = client.get_model(DEFAULT_MODEL)
-            response = model.generate_content(prompt)
+            # Call Gemini API with retry logic
+            response = self._call_gemini_api(prompt)
 
             # Process and return the response
             return self._process_response(response)
 
+        except genai_errors.ServerError as e:
+            # Log essential error information
+            error_str = str(e)
+            logger.error(f"Server error from Gemini API: {error_str}", exc_info=True)
+
+            # Service unavailable message for better user experience
+            return (
+                "⚠️ The Gemini API service returned an error. "
+                "Please try again in a few minutes. ⚠️\n\n"
+                "This is likely a temporary issue with Google's servers."
+            )
+
         except Exception as e:
-            logger.error(f"Error generating PRD: {str(e)}", exc_info=True)
+            # Log the exception with standard traceback
+            logger.error(f"Unexpected error during PRD generation: {str(e)}", exc_info=True)
             return f"Error generating PRD: {str(e)}"
 
     def _create_prompt(self, task_description: str, code_context: str) -> str:
@@ -98,6 +112,43 @@ class Architect:
         
         Format your response in markdown. Be concise but comprehensive.
         """
+
+    def _call_gemini_api(self, prompt: str, max_retries: int = 3, retry_delay: int = 10) -> Any:
+        """
+        Call the Gemini API with automatic retries on server errors.
+
+        Args:
+            prompt (str): The prompt to send to Gemini
+            max_retries (int): Maximum number of retry attempts
+            retry_delay (int): Delay between retries in seconds
+
+        Returns:
+            Any: The Gemini API response
+
+        Raises:
+            genai_errors.ServerError: If all retry attempts fail
+            Exception: For any other errors
+        """
+        client = genai.Client(api_key=api_key)
+
+        for attempt in range(1, max_retries + 1):
+            try:
+                logger.debug(f"Gemini API call attempt {attempt}/{max_retries}")
+                return client.models.generate_content(model=DEFAULT_MODEL, contents=prompt)
+            except genai_errors.ServerError as e:
+                logger.warning(f"Server error on attempt {attempt}/{max_retries}: {str(e)}")
+
+                # If this is the last attempt, re-raise the exception
+                if attempt == max_retries:
+                    logger.error("All retry attempts failed")
+                    raise
+
+                # Wait before the next retry
+                logger.info(f"Waiting {retry_delay} seconds before retry...")
+                time.sleep(retry_delay)
+
+        # This line should never be reached as the loop either returns or raises an exception
+        return None
 
     def _process_response(self, response) -> str:
         """

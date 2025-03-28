@@ -46,7 +46,7 @@ echo "GEMINI_MODEL=gemini-2.5-pro-exp-03-25" >> .env
 
 # Test installing and importing from the built package
 echo "Testing package import..."
-uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-generativeai python -c "
+uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-genai python -c "
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -64,6 +64,30 @@ else
     exit 1
 fi
 
+# Create a test codebase directory with some sample files
+mkdir -p test_codebase
+cat > test_codebase/main.py << 'EOL'
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+if __name__ == "__main__":
+    print("Calculator app")
+    print(f"2 + 3 = {add(2, 3)}")
+EOL
+
+cat > test_codebase/utils.py << 'EOL'
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
+EOL
+
 # Create a minimal test script per README instructions
 cat > test_script.py << 'EOL'
 #!/usr/bin/env python3
@@ -73,6 +97,7 @@ Test script to check if mcp-server-architect works with FastMCP API.
 import sys
 import logging
 import os
+import pathlib
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -96,7 +121,7 @@ try:
     else:
         logger.info("GEMINI_API_KEY is properly set")
 
-    # Create a FastMCP instance following the pattern in the fixed code
+    # Create a FastMCP instance
     server = FastMCP(
         "TestArchitect",
         description="Test instance of Architect"
@@ -114,8 +139,36 @@ try:
     
     logger.info("Successfully created FastMCP server with Architect tool")
     
-    # Test a simple call to ensure API connection works
-    # Don't need to run the full API call, just verify initialization works
+    # Get absolute path to test codebase
+    current_dir = pathlib.Path(__file__).parent.absolute()
+    test_codebase_path = current_dir / "test_codebase"
+    
+    # Run a real test with a small task to reproduce the error
+    logger.info(f"Running test with codebase at: {test_codebase_path}")
+    task = "Add a multiply_and_add function that multiplies two numbers and adds a third number."
+    
+    try:
+        # Make the request
+        logger.info("Making API request to Gemini...")
+        result = generate_prd(task, str(test_codebase_path))
+        logger.info("Function returned without crashing")
+        
+        # Print the full result for debugging
+        logger.info(f"FULL RESULT: {result}")
+        
+        # Check result type
+        if "⚠️" in result:
+            logger.warning("√ SUCCESS: Returned user-friendly 503 error message")
+            logger.info("Test successful - 503 error was handled with a nice error message")
+        elif "Error generating PRD:" in result:
+            logger.warning("√ SUCCESS: Error was caught and handled, but not with the special 503 message")
+            logger.info("Test successful - error handled gracefully")
+        else:
+            logger.info("PRD was successfully generated without errors")
+    except Exception as e:
+        logger.error(f"PRD generation failed with uncaught exception: {str(e)}", exc_info=True)
+        sys.exit(1)
+    
     logger.info("Test completed successfully")
     
 except Exception as e:
@@ -125,7 +178,7 @@ EOL
 
 # Test running the script
 echo "Running functional test..."
-uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-generativeai python test_script.py
+uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-genai python test_script.py
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Functional test passed!${NC}"

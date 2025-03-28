@@ -2,7 +2,7 @@
 
 ## Commands
 - Setup: `uv add -e .` (install in dev mode)
-- Dependencies: `uv add google-generativeai python-dotenv` (required packages)
+- Dependencies: `uv add google-genai python-dotenv` (required packages)
 - Build: `uv build --no-sources`
 - Run: `uvx mcp-server-architect`
 - Lint: `ruff check .`
@@ -17,6 +17,8 @@ When committing changes:
 1. Use a succinct one-line commit message
 2. Don't include "Generated with Claude Code" or "Co-Authored-By" lines
 3. Run linter checks before committing
+4. Always add all modified files including lock files for a clean state (`git add .`)
+5. If certain files should not be committed, explicitly gitignore them
 
 ## UV Cheatsheet
 - Add dependency: `uv add <package>` or `uv add <package> --dev`
