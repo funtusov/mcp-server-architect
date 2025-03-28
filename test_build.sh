@@ -43,10 +43,11 @@ cd tmp/test_build
 echo "Creating .env file in test directory..."
 echo "GEMINI_API_KEY=$GEMINI_API_KEY" > .env
 echo "GEMINI_MODEL=gemini-2.5-pro-exp-03-25" >> .env
+echo "EXA_API_KEY=$EXA_API_KEY" >> .env
 
 # Test installing and importing from the built package
 echo "Testing package import..."
-uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-genai python -c "
+uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-genai --with exa-py --with requests python -c "
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -55,6 +56,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp_server_architect.core import Architect
 print(f'Successfully imported mcp-server-architect version {__version__}')
 print(f'GEMINI_API_KEY is ' + ('set' if os.getenv('GEMINI_API_KEY') else 'not set'))
+print(f'EXA_API_KEY is ' + ('set' if os.getenv('EXA_API_KEY') else 'not set'))
 "
 
 if [ $? -eq 0 ]; then
@@ -114,12 +116,19 @@ try:
     
     logger.info("Successfully imported required modules")
     
-    # Check if API key is set
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
+    # Check if API keys are set
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    exa_key = os.getenv("EXA_API_KEY")
+    
+    if not gemini_key:
         logger.warning("GEMINI_API_KEY is not set!")
     else:
         logger.info("GEMINI_API_KEY is properly set")
+        
+    if not exa_key:
+        logger.warning("EXA_API_KEY is not set! Web search will not work.")
+    else:
+        logger.info("EXA_API_KEY is properly set")
 
     # Create a FastMCP instance
     server = FastMCP(
@@ -224,7 +233,7 @@ EOL
 
 # Test running the script
 echo "Running functional test..."
-uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-genai python test_script.py
+uv run --with "../../$WHEEL" --with mcp --with python-dotenv --with google-genai --with exa-py --with requests python test_script.py
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Functional test passed!${NC}"

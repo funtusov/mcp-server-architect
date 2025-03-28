@@ -115,7 +115,7 @@ def main():
         return architect.think(request)
 
     # Start the MCP server
-    logger.info("Starting Architect MCP server...")
+    logger.info(f"Starting Architect MCP server v{__version__}...")
     server.run()
 
 

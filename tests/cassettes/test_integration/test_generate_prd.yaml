@@ -1,0 +1,132 @@
+interactions:
+- request:
+    body: '{"contents":[{"role":"user","parts":[{"text":"Generate a PRD for the following
+      task: Create a simple calculator app with basic operations"}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
+      are an expert software architect and technical lead.\n        \n        Your
+      task is to create a Product Requirements Document (PRD) or High-Level Design
+      Document based on the \n        user''s request and any code context you gather
+      using your tools.\n        \n        Your PRD should include:\n        1. Overview
+      of the requested feature/task\n        2. Technical requirements and constraints\n        3.
+      Proposed architecture/design\n        4. Implementation plan with specific files
+      to modify\n        5. Potential challenges and mitigations\n        \n        Format
+      your response in markdown. Be concise but comprehensive.\n        You have access
+      to tools to help with your task. Use them as needed.\n        "}]},"tools":{"function_declarations":[{"name":"web_search","description":"<summary>Search
+      the web for information on a given query using Exa API.</summary>\n<returns>\n<description>A
+      string containing the search results or error message</description>\n</returns>","parameters":{"description":"Input
+      schema for the web search tool.","properties":{"query":{"description":"The search
+      query to execute","type":"string"},"num_results":{"type":"integer","nullable":true}},"required":["query"],"type":"object"}},{"name":"code_reader","description":"<summary>Read
+      and analyze source code files from the specified codebase path.</summary>\n<returns>\n<description>A
+      string containing the code content or error message</description>\n</returns>","parameters":{"description":"Input
+      schema for the code reader tool.","properties":{"paths":{"description":"List
+      of file or directory paths to read, relative to the base codebase path","items":{"type":"string"},"type":"array"},"filter_extensions":{"items":{"type":"string"},"type":"array","nullable":true},"max_files":{"type":"integer","nullable":true}},"required":["paths"],"type":"object"}},{"name":"llm","description":"<summary>Execute
+      a prompt against a configured LLM.</summary>\n<returns>\n<description>The text
+      response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
+      schema for the LLM tool.","properties":{"prompt":{"description":"The prompt
+      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true},"max_tokens":{"type":"integer","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '2582'
+      content-type:
+      - application/json
+      host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - pydantic-ai/0.0.46
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 28 Mar 2025 18:24:07 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=28152
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -7,14 +7,18 @@ A Model Context Protocol server that acts as an AI Software Architect. It analyz
 - Analyze local codebase directories to understand project structure
 - Generate comprehensive PRDs or design documents for new features
 - Provide reasoning assistance for stuck LLMs on coding tasks
+- Agent-based architecture with tools for web search, code reading, and LLM integration
 - Integrates with Claude Code via MCP
 - Uses Google's Gemini Pro model for content generation
 - Easy to install and run with `uvx mcp-server-architect`
+
+See the [CHANGELOG](CHANGELOG.md) for details on the latest improvements.
 
 ## Prerequisites
 
 - Python 3.10 or higher
 - Google API key for Gemini Pro (get one from [Google AI Studio](https://aistudio.google.com/app/apikey))
+- Exa API key for web search capabilities (get one from [Exa AI](https://exa.ai))
 
 ## Installation
 
@@ -88,10 +92,10 @@ The easiest way to run the server is with `uvx`, passing your Gemini API key:
 
 ```bash
 # As a one-liner (recommended)
-env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+env GEMINI_API_KEY=your_api_key_here EXA_API_KEY=your_exa_key_here uvx mcp-server-architect
 
 # Alternatively, use a .env file in the current directory
-# with GEMINI_API_KEY=your_api_key_here
+# with GEMINI_API_KEY and EXA_API_KEY environment variables
 ```
 
 ### Using with MCP Inspector
@@ -99,7 +103,7 @@ env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
 To debug or test the server with the MCP Inspector:
 
 ```bash
-env GEMINI_API_KEY=your_api_key_here npx @modelcontextprotocol/inspector uvx mcp-server-architect
+env GEMINI_API_KEY=your_api_key_here EXA_API_KEY=your_exa_key_here npx @modelcontextprotocol/inspector uvx mcp-server-architect
 ```
 
 This will open an inspector interface (usually at http://localhost:8787) that allows you to test the server's tools interactively.
@@ -110,16 +114,16 @@ Claude Code supports MCP servers in various scopes. Here's how to add the Archit
 
 ```bash
 # Local scope (only available to you in the current project)
-claude mcp add architect -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+claude mcp add architect -- env GEMINI_API_KEY=your_api_key_here EXA_API_KEY=your_exa_key_here uvx mcp-server-architect
 
 # Project scope (shared with everyone via .mcp.json)
-claude mcp add architect -s project -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+claude mcp add architect -s project -- env GEMINI_API_KEY=your_api_key_here EXA_API_KEY=your_exa_key_here uvx mcp-server-architect
 
 # User scope (available to you across all projects)
-claude mcp add architect -s user -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+claude mcp add architect -s user -- env GEMINI_API_KEY=your_api_key_here EXA_API_KEY=your_exa_key_here uvx mcp-server-architect
 ```
 
-> **Important:** Replace `your_api_key_here` with your actual Google API key for Gemini
+> **Important:** Replace `your_api_key_here` with your actual Google API key for Gemini and `your_exa_key_here` with your Exa API key for web search
 
 #### Understanding MCP Server Scopes
 
@@ -139,9 +143,10 @@ For security, you may want to store your API key in a more secure way. You can:
    ```bash
    # Create a .env file (don't commit this!)
    echo "GEMINI_API_KEY=your_api_key_here" > .env
+   echo "EXA_API_KEY=your_exa_key_here" >> .env
    
    # Add to Claude Code with the env prefix
-   claude mcp add architect -- env GEMINI_API_KEY=your_api_key_here uvx mcp-server-architect
+   claude mcp add architect -- env GEMINI_API_KEY=your_api_key_here EXA_API_KEY=your_exa_key_here uvx mcp-server-architect
    ```
 
 2. **Use your OS's secure credential storage:**
@@ -171,6 +176,15 @@ uv run pytest
 # Using pip
 python -m pytest
 ```
+
+The tests use pytest-recording to record HTTP interactions with APIs. By default, tests will use previously recorded responses. To update the recordings:
+
+```bash
+# Force rewrite of API recordings
+pytest --record-mode=rewrite
+```
+
+For more details about testing, see [tests/README.md](tests/README.md).
 
 ## MCP Resources and Tools
 

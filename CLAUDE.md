@@ -20,6 +20,19 @@ For a complete guide on building, testing, and publishing new versions, see [PUB
   - Should not be run routinely during development
 - For normal development, use linting to check code quality: `ruff check .`
 
+### Integration Tests Best Practices
+- Use pytest-recording for integration tests to record live API responses
+- Never use mocks in integration tests; they create brittle tests that don't catch real issues
+- Run tests with recorded cassettes:
+  ```bash
+  uv run pytest tests/ -v
+  ```
+- To record new cassettes:
+  ```bash
+  uv run pytest tests/ --record-mode=rewrite
+  ```
+- Remember to check cassettes into source control but filter sensitive data
+
 ## Committing Changes
 When committing changes:
 1. Use a succinct one-line commit message
@@ -51,3 +64,16 @@ When committing changes:
 - Gemini API for generative AI capabilities
 - Context-building from codebase files
 - Clean error handling with detailed logging
+
+## Project Documentation
+When implementing features, refer to documentation located in `.llm/docs/` directory:
+
+Available docs:
+- PydanticAI
+  - Intro: `.llm/docs/pydantic_ai/intro.md`
+  - Agents: `.llm/docs/pydantic_ai/agents.md`
+  - Tools: `.llm/docs/pydantic_ai/tools.md`
+  - Models: `.llm/docs/pydantic_ai/models.md`
+  - Index: `.llm/docs/pydantic_ai/index.md`
+
+Always read these docs when working with PydanticAI or implementing agent-based functionality to follow project conventions and best practices.

@@ -29,5 +29,8 @@ dist/
 build/
 *.egg-info/
 
+# Local LLM instructions/docs
+.llm
+
 # Temporary files and test directories
 tmp/
