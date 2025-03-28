@@ -12,6 +12,14 @@
 ## Publishing a New Version
 For a complete guide on building, testing, and publishing new versions, see [PUBLISH.md](PUBLISH.md) for detailed step-by-step instructions.
 
+## Testing
+- Only run `test_build.sh` before publishing OR when explicitly requested
+- The test script makes API calls to Gemini which:
+  - Incurs API costs
+  - Is slow (30+ seconds)
+  - Should not be run routinely during development
+- For normal development, use linting to check code quality: `ruff check .`
+
 ## Committing Changes
 When committing changes:
 1. Use a succinct one-line commit message

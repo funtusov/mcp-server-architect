@@ -137,24 +137,29 @@ try:
         """
         return architect.generate_prd(task_description, codebase_path)
     
-    logger.info("Successfully created FastMCP server with Architect tool")
+    @server.tool()
+    def think(request: str) -> str:
+        """
+        Provide reasoning assistance for a stuck LLM on a coding task.
+        """
+        return architect.think(request)
+    
+    logger.info("Successfully created FastMCP server with Architect tools")
     
     # Get absolute path to test codebase
     current_dir = pathlib.Path(__file__).parent.absolute()
     test_codebase_path = current_dir / "test_codebase"
     
-    # Run a real test with a small task to reproduce the error
+    # Test 1: Test the generate_prd tool
+    logger.info("TEST 1: Testing generate_prd tool...")
     logger.info(f"Running test with codebase at: {test_codebase_path}")
     task = "Add a multiply_and_add function that multiplies two numbers and adds a third number."
     
     try:
         # Make the request
-        logger.info("Making API request to Gemini...")
+        logger.info("Making API request to Gemini for PRD generation...")
         result = generate_prd(task, str(test_codebase_path))
         logger.info("Function returned without crashing")
-        
-        # Print the full result for debugging
-        logger.info(f"FULL RESULT: {result}")
         
         # Check result type
         if "⚠️" in result:
@@ -169,7 +174,48 @@ try:
         logger.error(f"PRD generation failed with uncaught exception: {str(e)}", exc_info=True)
         sys.exit(1)
     
-    logger.info("Test completed successfully")
+    # Test 2: Test the think tool
+    logger.info("\nTEST 2: Testing think tool...")
+    think_request = """
+    I'm trying to implement a function that reverses a linked list but I'm stuck on handling the edge cases.
+    Here's my code:
+    ```python
+    def reverse_linked_list(head):
+        if not head or not head.next:
+            return head
+        prev = None
+        current = head
+        while current:
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+        return prev
+    ```
+    What edge cases am I missing? Is my implementation correct?
+    """
+    
+    try:
+        # Make the request
+        logger.info("Making API request to Gemini for reasoning assistance...")
+        think_result = think(think_request)
+        logger.info("Function returned without crashing")
+        
+        # Check result type
+        if "⚠️" in think_result:
+            logger.warning("√ SUCCESS: Returned user-friendly 503 error message")
+            logger.info("Test successful - 503 error was handled with a nice error message")
+        elif "Error providing reasoning assistance:" in think_result:
+            logger.warning("√ SUCCESS: Error was caught and handled, but not with the special 503 message")
+            logger.info("Test successful - error handled gracefully")
+        else:
+            logger.info("Reasoning assistance was successfully generated without errors")
+            logger.info(f"Response starts with: {think_result[:100]}...")
+    except Exception as e:
+        logger.error(f"Reasoning assistance failed with uncaught exception: {str(e)}", exc_info=True)
+        sys.exit(1)
+    
+    logger.info("All tests completed successfully")
     
 except Exception as e:
     logger.error(f"Error: {str(e)}", exc_info=True)

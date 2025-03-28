@@ -1,11 +1,12 @@
 # mcp-server-architect
 
-A Model Context Protocol server that acts as an AI Software Architect. It analyzes codebases and generates Product Requirements Documents (PRDs) or High-Level Design Documents based on task descriptions.
+A Model Context Protocol server that acts as an AI Software Architect. It analyzes codebases to generate Product Requirements Documents (PRDs) and provides reasoning assistance for complex coding tasks.
 
 ## Features
 
 - Analyze local codebase directories to understand project structure
 - Generate comprehensive PRDs or design documents for new features
+- Provide reasoning assistance for stuck LLMs on coding tasks
 - Integrates with Claude Code via MCP
 - Uses Google's Gemini Pro model for content generation
 - Easy to install and run with `uvx mcp-server-architect`
@@ -182,9 +183,15 @@ This MCP server exposes the following resources and tools:
     - `task_description` (required): Detailed description of the programming task or feature to implement
     - `codebase_path` (required): Local file path to the codebase directory to analyze
 
+- **`Architect::think`**: Provides reasoning assistance for a stuck LLM on a coding task
+  - Parameters:
+    - `request` (required): Detailed description of the coding task/issue and relevant code snippets
+
 ### Usage Examples
 
-After installation, you can use the tool in Claude Code by prompting:
+#### Generate PRD Example
+
+After installation, you can use the PRD tool in Claude Code by prompting:
 
 ```
 @Architect please generate a PRD for creating a new feature.
@@ -200,21 +207,53 @@ Task Description: "Implement JWT authentication in a Flask application, with log
 Codebase Path: "/Users/username/projects/my-flask-app"
 ```
 
-You can also create a custom slash command for easier access:
+#### Reasoning Assistance Example
+
+When you're stuck on a coding task, use the thinking tool to get detailed reasoning:
+
+```
+@Architect I need help thinking through a coding problem.
+I'm trying to implement a function that reverses a linked list but I'm stuck on handling the edge cases.
+Here's my code:
+```python
+def reverse_linked_list(head):
+    if not head or not head.next:
+        return head
+    prev = None
+    current = head
+    while current:
+        next_node = current.next
+        current.next = prev
+        prev = current
+        current = next_node
+    return prev
+```
+What edge cases am I missing? Is my implementation correct?
+```
+
+You can also create custom slash commands for easier access:
 
 1. Create a commands directory in your project:
    ```bash
    mkdir -p .claude/commands
    ```
 
-2. Create a command file for Architect:
+2. Create command files for Architect tools:
    ```bash
+   # PRD generation command
    echo "Generate a PRD for the following task:\n\nTask Description: \"$ARGUMENTS\"\nCodebase Path: \"`pwd`\"" > .claude/commands/prd.md
+   
+   # Thinking assistance command
+   echo "I need help thinking through this coding problem:\n\n$ARGUMENTS" > .claude/commands/think.md
    ```
 
-3. Use it in Claude Code:
+3. Use them in Claude Code:
    ```
+   # For PRD generation
    /project:prd Implement a new user authentication system
+   
+   # For reasoning assistance
+   /project:think I'm trying to optimize this recursive function but hitting a stack overflow...
    ```
 
 ## Building and Publishing

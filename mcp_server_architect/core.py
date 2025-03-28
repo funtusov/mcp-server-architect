@@ -30,10 +30,11 @@ DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro-exp-03-25")
 class Architect:
     """
     MCP server that acts as an AI Software Architect.
-    Generates Product Requirements Documents (PRDs) based on codebase analysis.
+    Generates Product Requirements Documents (PRDs) based on codebase analysis
+    and provides reasoning assistance for coding tasks.
     """
 
-    # The tool will be registered with the FastMCP server in __main__.py
+    # The tools will be registered with the FastMCP server in __main__.py
     def generate_prd(self, task_description: str, codebase_path: str) -> str:
         """
         Generate a PRD or high-level design document based on codebase analysis and task description.
@@ -56,23 +57,8 @@ class Architect:
             # Create the prompt for Gemini
             prompt = self._create_prompt(task_description, code_context)
 
-            # Call Gemini API with retry logic
-            response = self._call_gemini_api(prompt)
-
-            # Process and return the response
-            return self._process_response(response)
-
-        except genai_errors.ServerError as e:
-            # Log essential error information
-            error_str = str(e)
-            logger.error(f"Server error from Gemini API: {error_str}", exc_info=True)
-
-            # Service unavailable message for better user experience
-            return (
-                "⚠️ The Gemini API service returned an error. "
-                "Please try again in a few minutes. ⚠️\n\n"
-                "This is likely a temporary issue with Google's servers."
-            )
+            # Generate the response
+            return self._generate_gemini_response(prompt, "PRD generation")
 
         except Exception as e:
             # Log the exception with standard traceback
@@ -112,6 +98,32 @@ class Architect:
         
         Format your response in markdown. Be concise but comprehensive.
         """
+
+    def _generate_gemini_response(self, prompt: str, operation_type: str) -> str:
+        """
+        Generate a response from Gemini API with error handling.
+
+        Args:
+            prompt (str): The prompt to send to Gemini
+            operation_type (str): Type of operation (for error messages)
+
+        Returns:
+            str: The processed response text
+        """
+        try:
+            # Call Gemini API with retry logic
+            response = self._call_gemini_api(prompt)
+
+            # Process and return the response
+            return self._process_response(response)
+
+        except genai_errors.ServerError as e:
+            # Log essential error information
+            error_str = str(e)
+            logger.error(f"Server error from Gemini API during {operation_type}: {error_str}", exc_info=True)
+
+            # Concise service error message
+            return f"The API returned an error: {error_str}."
 
     def _call_gemini_api(self, prompt: str, max_retries: int = 3, retry_delay: int = 10) -> Any:
         """
@@ -166,3 +178,56 @@ class Architect:
         if hasattr(response, "parts"):
             return "".join(part.text for part in response.parts)
         return str(response)
+
+    def think(self, request: str) -> str:
+        """
+        Provide reasoning assistance for a stuck LLM on a coding task.
+
+        Args:
+            request (str): Detailed description of the coding task/issue and relevant code
+
+        Returns:
+            str: Reasoning guidance and potential solutions
+        """
+        logger.info(f"Providing reasoning assistance for request: {request[:50]}...")
+
+        try:
+            # Create the prompt for Gemini
+            prompt = self._create_think_prompt(request)
+
+            # Generate the response
+            return self._generate_gemini_response(prompt, "reasoning assistance")
+
+        except Exception as e:
+            # Log the exception with standard traceback
+            logger.error(f"Unexpected error during reasoning assistance: {str(e)}", exc_info=True)
+            return f"Error providing reasoning assistance: {str(e)}"
+
+    def _create_think_prompt(self, request: str) -> str:
+        """
+        Create a comprehensive prompt for the Gemini model to provide reasoning assistance.
+
+        Args:
+            request (str): The detailed request including task description and code snippets
+
+        Returns:
+            str: The formatted prompt
+        """
+        return f"""
+        You are an expert software developer with deep expertise in code analysis and problem-solving.
+        
+        You need to help another AI that is stuck on a coding task. Analyze the request below and provide
+        your reasoning, insights, and potential solutions.
+        
+        ## Request:
+        {request}
+        
+        In your response:
+        1. Identify the core problem or challenge
+        2. Break down the problem into manageable steps
+        3. Provide specific coding approaches or patterns to resolve the issue
+        4. Suggest alternative solutions when appropriate
+        5. Explain your reasoning clearly
+        
+        Format your response in markdown. Be concise but thorough. Focus on practical, implementable solutions.
+        """

@@ -81,10 +81,10 @@ def main():
     # Create MCP server instance
     server = FastMCP(
         "Architect",
-        description="AI Software Architect that generates PRDs and design documents based on codebase analysis",
+        description="AI Software Architect that generates PRDs and design documents based on codebase analysis, and provides reasoning assistance",
     )
 
-    # Register the Architect tool using decorator pattern
+    # Register the Architect tools using decorator pattern
     architect = Architect()
 
     @server.tool()
@@ -100,6 +100,19 @@ def main():
             str: The generated PRD or design document
         """
         return architect.generate_prd(task_description, codebase_path)
+
+    @server.tool()
+    def think(request: str) -> str:
+        """
+        Provide reasoning assistance for a stuck LLM on a coding task.
+
+        Args:
+            request (str): Detailed description of the coding task/issue and relevant code snippets
+
+        Returns:
+            str: Reasoning guidance and potential solutions
+        """
+        return architect.think(request)
 
     # Start the MCP server
     logger.info("Starting Architect MCP server...")

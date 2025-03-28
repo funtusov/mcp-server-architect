@@ -474,7 +474,7 @@ cli = [
 
 [[package]]
 name = "mcp-server-architect"
-version = "0.1.5"
+version = "0.1.7"
 source = { editable = "." }
 dependencies = [
     { name = "google-genai" },
