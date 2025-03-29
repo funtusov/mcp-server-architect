@@ -19,7 +19,7 @@ interactions:
     uri: https://api.exa.ai/search
   response:
     body:
-      string: "{\"requestId\":\"093e70ef94ae353dc4352cb39ff8379e\",\"autopromptString\":\"What
+      string: "{\"requestId\":\"9615a1cbd8647daaf8182b6c29a0f613\",\"autopromptString\":\"What
         is the Model Context Protocol\",\"resolvedSearchType\":\"keyword\",\"results\":[{\"id\":\"https://www.anthropic.com/news/model-context-protocol\",\"title\":\"Introducing
         the Model Context Protocol - Anthropic\",\"url\":\"https://www.anthropic.com/news/model-context-protocol\",\"publishedDate\":\"2024-11-25T12:00:00.000Z\",\"author\":\"\",\"text\":\"Application
         error: a client-side exception has occurred (see the browser console for more
@@ -69,7 +69,7 @@ interactions:
         read and write files to your computer\u2019s file system.\",\"favicon\":\"https://mintlify.s3-us-west-1.amazonaws.com/anthropic/_generated/favicon/favicon-32x32.png?v=3\"}],\"costDollars\":{\"total\":0.008,\"search\":{\"neural\":0.005},\"contents\":{\"text\":0.003}}}"
     headers:
       CF-RAY:
-      - 927ed4d19d0d3682-MAD
+      - 9280affc88d1034d-MAD
       Connection:
       - keep-alive
       Content-Encoding:
@@ -77,11 +77,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 29 Mar 2025 10:54:50 GMT
+      - Sat, 29 Mar 2025 16:19:13 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=zfiggJrkOFRMiVN75TdrGb7WkTAfjB%2Bmgj2OC7Fsas9CCTvpC6ARtRExNZRbXCH5gsCHudWZfsRoerUCdeag1twrLwE%2FBgrCEMeCfX3Uza6v6pUD7OzeUlJ7Nqc%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=1KVWpaSTodFjGKGawR6wBG4wiA5SYP%2FqrxEM672wOIokVxw9d1YzTPZlYFnCf3TmAssLX3hd3mJ1918UeszuFlRbVeSDnSHRC0kUm4TamwLpZoEXgoR%2FFa8I6dE%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -91,9 +91,9 @@ interactions:
       cf-cache-status:
       - DYNAMIC
       etag:
-      - W/"12cc-aeb6K/AzqegndlWdPSySbQ4psIM"
+      - W/"12cc-Nn4aRJddREW/xtdxr11K0RkwvlU"
       server-timing:
-      - cfL4;desc="?proto=TCP&rtt=14816&min_rtt=13652&rtt_var=5951&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2824&recv_bytes=996&delivery_rate=212130&cwnd=224&unsent_bytes=0&cid=ef7846802345a1fe&ts=1724&x=0"
+      - cfL4;desc="?proto=TCP&rtt=15047&min_rtt=14966&rtt_var=5775&sent=5&recv=7&lost=0&retrans=0&sent_bytes=2824&recv_bytes=996&delivery_rate=185415&cwnd=215&unsent_bytes=0&cid=1141ec0801a0ef6e&ts=1871&x=0"
       strict-transport-security:
       - max-age=31536000; includeSubDomains
       vary:
@@ -103,9 +103,9 @@ interactions:
       x-ratelimit-limit:
       - '200'
       x-ratelimit-remaining:
-      - '197'
+      - '198'
       x-ratelimit-reset:
-      - '1743245690'
+      - '1743265153'
     status:
       code: 200
       message: OK

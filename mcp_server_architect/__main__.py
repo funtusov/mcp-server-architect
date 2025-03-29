@@ -8,8 +8,10 @@ import logging
 import os
 import sys
 
+import logfire
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
+from pydantic_ai import Agent
 
 from mcp_server_architect.core import Architect
 from mcp_server_architect.version import __version__
@@ -66,13 +68,26 @@ def main():
     else:
         logger.warning(f".env file not found at {dotenv_path}. Using environment variables.")
 
-    # Check for API key
+    # Configure Logfire for instrumentation if API key is available
+    logfire_api_key = os.getenv("LOGFIRE_API_KEY")
+    if logfire_api_key:
+        logger.info("Configuring Logfire instrumentation")
+        logfire.configure(token=logfire_api_key)
+        # Instrument PydanticAI Agent to capture all agent activity
+        Agent.instrument_all()
+    else:
+        logger.warning("LOGFIRE_API_KEY not found. Logfire instrumentation disabled.")
+
+    # Check for required API key
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         logger.error("GEMINI_API_KEY environment variable is required")
         sys.exit(1)
 
-    # Store the API key for use with Gemini Client
+    # Check for OpenAI API key
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if not openai_api_key:
+        logger.warning("OPENAI_API_KEY environment variable not set. Some functionality may be limited.")
 
     # Set Gemini model from arguments or environment
     os.environ["GEMINI_MODEL"] = args.gemini_model

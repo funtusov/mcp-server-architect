@@ -61,9 +61,17 @@ When committing changes:
 
 ## Architecture
 - MCP server with FastMCP integration
-- Gemini API for generative AI capabilities
+- Multi-model architecture: GPT-4o for main agent, Gemini for specific tasks
+- Agent-based processing with tool orchestration
 - Context-building from codebase files
+- Logfire instrumentation for monitoring and debugging
 - Clean error handling with detailed logging
+
+## Environment Variables
+- `OPENAI_API_KEY`: OpenAI API key for GPT-4o (primary agent)
+- `GEMINI_API_KEY`: Google AI Studio API key for Gemini (backup and tool operations)
+- `EXA_API_KEY`: Exa AI API key for web search capabilities
+- `LOGFIRE_API_KEY`: Logfire API key for agent instrumentation
 
 ## Project Documentation
 When implementing features, refer to documentation located in `.llm/docs/` directory:

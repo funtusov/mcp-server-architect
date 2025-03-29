@@ -65,8 +65,9 @@ class Architect:
         logger.info(f"Providing reasoning assistance for request: {request[:50]}...")
 
         try:
-            # Use the agent manager to run the thinking agent
-            return self.agent_manager.run_think_agent(request)
+            # Use the agent manager to run the analyze agent with an empty codebase path
+            # This replaces the former run_think_agent method
+            return self.agent_manager.run_analyze_agent(request, "")
 
         except Exception as e:
             # Log the exception with standard traceback

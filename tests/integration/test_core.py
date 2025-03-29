@@ -10,7 +10,7 @@ import pytest
 from mcp_server_architect.core import Architect
 
 # Directory for test data
-TEST_CODEBASE_PATH = os.path.join(os.path.dirname(__file__), "test_codebase")
+TEST_CODEBASE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "test_codebase")
 
 
 def scrub_api_keys(response):
@@ -28,7 +28,7 @@ def setup_test_environment():
     
     # Make sure test directories exist
     os.makedirs(TEST_CODEBASE_PATH, exist_ok=True)
-    os.makedirs(os.path.join(os.path.dirname(__file__), "cassettes"), exist_ok=True)
+    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(__file__)), "cassettes"), exist_ok=True)
     
     # Create a simple Python file in the test codebase
     with open(os.path.join(TEST_CODEBASE_PATH, "main.py"), "w") as f:

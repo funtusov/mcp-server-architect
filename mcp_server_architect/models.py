@@ -15,7 +15,7 @@ MODEL_CONFIGS = {
     "gemini-2.5": "google-gla:gemini-2.5-pro-exp-03-25",
     
     # OpenAI models
-    "gpt4o": "openai:gpt-4o-latest",
+    "gpt4o": "openai:gpt-4o",
 }
 
 # Default model to use for agent loops

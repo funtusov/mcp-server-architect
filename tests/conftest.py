@@ -3,6 +3,7 @@
 Configuration for pytest.
 """
 
+import logging
 import os
 
 import pytest
@@ -21,7 +22,8 @@ if not os.environ.get("GEMINI_API_KEY"):
 
 # Optional EXA API key check
 if not os.environ.get("EXA_API_KEY"):
-    print("WARNING: EXA_API_KEY environment variable is not set. Web search tools will not work in tests.")
+    logger = logging.getLogger(__name__)
+    logger.warning("EXA_API_KEY environment variable is not set. Web search tools will not work in tests.")
 
 
 def filter_api_keys(response):

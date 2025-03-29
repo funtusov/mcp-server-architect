@@ -1,24 +1,117 @@
 # mcp-server-architect
 
-A Model Context Protocol server that acts as an AI Software Architect. It analyzes codebases to generate Product Requirements Documents (PRDs) and provides reasoning assistance for complex coding tasks.
+A Model Context Protocol server that acts as an AI Software Architect. It analyzes codebases to generate Product Requirements Documents (PRDs) and provides reasoning assistance for complex coding tasks using a powerful agent-based architecture.
 
 ## Features
 
-- Analyze local codebase directories to understand project structure
-- Generate comprehensive PRDs or design documents for new features
-- Provide reasoning assistance for stuck LLMs on coding tasks
-- Agent-based architecture with tools for web search, code reading, and LLM integration
-- Integrates with Claude Code via MCP
-- Uses Google's Gemini Pro model for content generation
-- Easy to install and run with `uvx mcp-server-architect`
+- **Multi-Model Architecture**: Uses OpenAI's GPT-4o for primary agent tasks with access to specialized tools
+- **Intelligent Codebase Analysis**: Builds comprehensive code context from project files for architectural understanding
+- **Agent-Based Design**: Uses a smart agent that autonomously decides which tools to employ for each task
+- **Tool-Based Processing**: Equipped with specialized tools for code reading, web searches, and targeted LLM queries
+- **Comprehensive PRD Generation**: Creates detailed product requirement documents with architectural insights
+- **Advanced Reasoning**: Helps developers solve complex coding challenges with step-by-step reasoning
+- **Logfire Instrumentation**: Built-in monitoring and debugging of agent activity with detailed telemetry
+- **MCP Integration**: Seamlessly connects with Claude Code via the Model Context Protocol
+- **Simple Deployment**: Quick to install and run with `uvx mcp-server-architect`
+
+## How It Works
+
+The Architect MCP Server implements a sophisticated agent-based architecture that mimics how a human software architect would approach complex design tasks:
+
+1. **Agent Loop**: When a request is received (either for PRD generation or reasoning assistance), a primary GPT-4o based agent evaluates the task and orchestrates the solution process.
+
+2. **Tool-Based Architecture**: The agent has access to specialized tools:
+   - **Code Reader**: Analyzes source code files and combines them into a coherent context representation
+   - **Web Search**: Uses Exa AI to find relevant technical information online
+   - **LLM Tool**: Makes targeted calls to specialized language models for specific sub-tasks
+
+3. **Autonomous Decision Making**: The agent determines which tools to use, when to use them, and how to synthesize their outputs to produce the final result.
+
+4. **Contextual Awareness**: For PRD generation, the system builds a deep understanding of your codebase structure, dependencies, and design patterns before making recommendations.
+
+5. **Flexible Response Generation**: All outputs are formatted in clear, structured markdown for easy integration into your workflow.
+
+### Component Architecture
+
+The system follows a modular design with the following key components:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                       MCP Server Interface                      │
+│                    (mcp_server_architect/__main__.py)           │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       Architect Core                            │
+│                    (mcp_server_architect/core.py)               │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       Agent Manager                             │
+│                (mcp_server_architect/agents/manager.py)         │
+└───┬─────────────────────┬────────────────────────┬──────────────┘
+    │                     │                        │
+    ▼                     ▼                        ▼
+┌───────────────┐    ┌─────────────┐         ┌─────────────┐
+│ LLM Models    │    │    Tools    │         │ Dependencies│
+│ OpenAI GPT-4o │    │ code_reader │         │ArchitectDeps│
+│ Gemini 2.5    │    │ web_search  │         └─────────────┘
+└───────────────┘    │ llm         │
+                     └─────────────┘
+```
+
+#### Component Flow:
+
+1. **MCP Server Interface**: Entry point that exposes the services via Model Context Protocol
+   - Registers tools (`generate_prd` and `think`)
+   - Handles incoming requests and routes them to the core
+
+2. **Architect Core**: Central component that coordinates operations
+   - Manages agent creation and execution
+   - Implements the public API (generate_prd, think)
+   - Handles errors and logging
+
+3. **Agent Manager**: Creates and configures agents with appropriate models and tools
+   - Selects models based on task (OpenAI or Gemini)
+   - Uses direct model initialization for OpenAI models
+   - Registers tools with the agent
+   - Provides methods for running the agent for different tasks
+
+4. **LLM Models**:
+   - OpenAI GPT-4o for main agent loop (default for general tasks)
+   - Gemini 2.5 for specific tasks (PRD generation and thinking)
+
+5. **Tools**:
+   - `code_reader`: Analyzes source code files from a codebase
+   - `web_search`: Searches the web for relevant information
+   - `llm`: Makes targeted LLM calls for specific sub-tasks
+
+6. **Dependencies**:
+   - `ArchitectDependencies`: Provides codebase path and API keys to tools
+
+#### Data Flow:
+
+1. User request → MCP Server Interface
+2. Interface routes request → Architect Core
+3. Core calls appropriate method on Agent Manager
+4. Agent Manager creates and configures agent
+5. Agent executes with tools, accessing models as needed
+6. Results flow back through the same chain
+7. Formatted response returned to user
 
 See the [CHANGELOG](CHANGELOG.md) for details on the latest improvements.
 
 ## Prerequisites
 
 - Python 3.10 or higher
-- Google API key for Gemini Pro (get one from [Google AI Studio](https://aistudio.google.com/app/apikey))
+- OpenAI API key for GPT-4o (get one from [OpenAI Platform](https://platform.openai.com/api-keys))
+- Google API key for Gemini Pro (get one from [Google AI Studio](https://aistudio.google.com/app/apikey)) 
 - Exa API key for web search capabilities (get one from [Exa AI](https://exa.ai))
+- Logfire API key for monitoring (optional, get one from [Logfire](https://logfire.sh/))
+
+The system will prioritize using OpenAI's models for the main agent tasks, while using Google Gemini for specific tool operations. Both AI model API keys are recommended for optimal performance. The Logfire API key is optional but provides valuable telemetry for monitoring and debugging agent activity.
 
 ## Installation
 

@@ -3,8 +3,9 @@
 Tests for the web search tool using Exa AI.
 """
 
-import os
 import asyncio
+import os
+
 import pytest
 
 from mcp_server_architect.tools.web_search import WebSearchInput

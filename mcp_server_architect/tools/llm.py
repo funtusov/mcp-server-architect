@@ -14,6 +14,8 @@ from mcp_server_architect.types import ArchitectDependencies
 # Configure logging
 logger = logging.getLogger(__name__)
 
+DEFAULT_MODEL = "gemini-2.5"
+
 
 class LLMInput(BaseModel):
     """Input schema for the LLM tool."""
@@ -36,25 +38,27 @@ async def llm(ctx: RunContext[ArchitectDependencies], input_data: LLMInput) -> s
     """
     try:
         # Determine which model to use - prefer the direct tool input if provided
-        model_id = input_data.model if input_data.model else "gemini-2.5"
+        model_id = input_data.model if input_data.model else DEFAULT_MODEL
         
         # Use PydanticAI to handle the model selection
         logger.info(f"Using model ID: {model_id}")
         
         # Get the model string from our config or fallback to gemini-2.5
-        model_string = MODEL_CONFIGS.get(model_id, MODEL_CONFIGS["gemini-2.5"])
+        model_string = MODEL_CONFIGS.get(model_id, MODEL_CONFIGS[DEFAULT_MODEL])
         
         # Create a simple agent for this single prompt
         agent = Agent(
             model_string,
-            system_prompt=f"You are a helpful assistant responding to: {input_data.prompt}"
+            system_prompt="You are a helpful assistant."
         )
         
-        # Run the agent with an empty prompt (since we included the prompt in the system message)
-        response = await agent.run(" ", generation_options={
-            "temperature": input_data.temperature,
-            "max_tokens": input_data.max_tokens
-        })
+        response = await agent.run(
+            input_data.prompt, 
+            generation_options={
+                "temperature": input_data.temperature,
+                "max_tokens": input_data.max_tokens
+            }
+        )
         
         return response.data
         
