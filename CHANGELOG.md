@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated default Gemini model to `gemini-2.5-pro-exp-03-25`
 - Improved error handling and logging across components
 - Added codebase_path parameter to think tool for better reasoning with codebase context
+- Removed standalone test files in favor of organized test suite with VCR recordings
 
 ### Fixed
 - Various linting issues and code style improvements
