@@ -10,8 +10,7 @@ from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, 
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Load API keys from .env
@@ -24,46 +23,60 @@ if not os.getenv("OPENAI_API_KEY"):
 
 logger.info(f"Using OpenAI API Key: ...{os.getenv('OPENAI_API_KEY')[-4:]}")
 
+
 # Define more complex agent dependencies that match our real app
 @dataclass
 class ArchitectDependencies:
     """Dependencies for the Architect agent, matching the real application."""
+
     codebase_path: str
     api_keys: dict[str, str]
-    
+
     # Add a helper method to get API keys, similar to real implementation
     def get_api_key(self, provider: str) -> str:
         """Get API key for a specific provider."""
         return self.api_keys.get(provider, "")
 
+
 # Input models for the various tools
 class CodeReaderInput(BaseModel):
     """Input model for the code_reader tool."""
+
     codebase_path: str = Field(description="Path to the codebase directory")
     file_patterns: list[str] = Field(description="List of file patterns to include", default=["**/*.py"])
 
+
 class WebSearchInput(BaseModel):
     """Input model for the web_search tool."""
+
     query: str = Field(description="The search query")
     num_results: int = Field(description="Number of results to return", default=3)
 
+
 class GeneratePRDInput(BaseModel):
     """Input model for the generate_prd tool."""
+
     task_description: str = Field(description="Description of the programming task")
     codebase_path: str = Field(description="Path to the codebase directory")
 
+
 class LLMInput(BaseModel):
     """Input model for the llm tool."""
+
     prompt: str = Field(description="The prompt to send to the LLM")
     model: str = Field(description="The model to use", default="")
+
 
 # In the actual problem case, we're getting a 404 "tools is not supported" error
 # Only for openai:gpt-4o string-based initialization
 
+
 # Add result type to make it more similar to the problematic case
 class ArchitectResult(BaseModel):
     """The result type for the agent."""
+
     content: str = Field(description="The generated PRD content")
+
 
 # Create the agent using string initialization
 agent = Agent(
@@ -89,8 +102,9 @@ agent = Agent(
     5. Potential challenges and mitigations
     
     Format your response in markdown. Be concise but comprehensive.
-    """
+    """,
 )
+
 
 # Implement code_reader tool
 @agent.tool
@@ -101,12 +115,12 @@ async def code_reader(ctx: RunContext[ArchitectDependencies], input_data: CodeRe
     """
     logger.info(f"Tool called: code_reader for path: {input_data.codebase_path}")
     logger.info(f"File patterns: {input_data.file_patterns}")
-    
+
     # Simulate file reading and add complexity with error handling
     try:
         # Simulate some async work
         await asyncio.sleep(0.5)
-        
+
         # In the real implementation, this would actually read files
         return """
         # Codebase Structure Analysis
@@ -137,6 +151,7 @@ async def code_reader(ctx: RunContext[ArchitectDependencies], input_data: CodeRe
         logger.error(f"Error in code_reader tool: {str(e)}")
         return f"Error analyzing codebase: {str(e)}"
 
+
 # Implement web_search tool
 @agent.tool
 async def web_search(ctx: RunContext[ArchitectDependencies], input_data: WebSearchInput) -> str:
@@ -144,25 +159,28 @@ async def web_search(ctx: RunContext[ArchitectDependencies], input_data: WebSear
     Search the web for information related to the query.
     """
     logger.info(f"Tool called: web_search for query: {input_data.query}")
-    
+
     # Check if we have an API key for web search
     api_key = ctx.deps.get_api_key("web_search")
     if not api_key:
         logger.warning("No web search API key found, returning mock results")
-    
+
     # In a real implementation, this would make an API call
     try:
         # Simulate latency
         await asyncio.sleep(1)
-        
+
         # Use the LLM tool within this tool - this nested tool pattern might be causing issues
-        llm_result = await llm(ctx, LLMInput(
-            prompt=f"Generate search results for: {input_data.query}",
-            model=""  # Use default model
-        ))
-        
+        llm_result = await llm(
+            ctx,
+            LLMInput(
+                prompt=f"Generate search results for: {input_data.query}",
+                model="",  # Use default model
+            ),
+        )
+
         logger.info("Generated search results with llm tool")
-        
+
         # Return simulated search results
         return f"""
         # Search Results for: {input_data.query}
@@ -182,6 +200,7 @@ async def web_search(ctx: RunContext[ArchitectDependencies], input_data: WebSear
         logger.error(f"Error in web_search tool: {str(e)}")
         return f"Error performing web search: {str(e)}"
 
+
 # Implement llm tool - this is more complex in the real app
 @agent.tool
 async def llm(ctx: RunContext[ArchitectDependencies], input_data: LLMInput) -> str:
@@ -189,13 +208,13 @@ async def llm(ctx: RunContext[ArchitectDependencies], input_data: LLMInput) -> s
     Execute a prompt against a configured language model.
     """
     logger.info(f"Tool called: llm with prompt: {input_data.prompt[:50]}...")
-    
+
     # In real implementation, this would use a different model (likely Gemini)
     # and make direct API calls instead of using PydanticAI
     try:
         # Simulate API call latency
         await asyncio.sleep(0.5)
-        
+
         # Return simulated LLM response
         return f"""
         Analysis for: {input_data.prompt[:30]}...
@@ -210,6 +229,7 @@ async def llm(ctx: RunContext[ArchitectDependencies], input_data: LLMInput) -> s
         logger.error(f"Error in llm tool: {str(e)}")
         return f"Error processing LLM prompt: {str(e)}"
 
+
 # Implement generate_prd tool
 @agent.tool
 async def generate_prd(ctx: RunContext[ArchitectDependencies], input_data: GeneratePRDInput) -> str:
@@ -217,24 +237,27 @@ async def generate_prd(ctx: RunContext[ArchitectDependencies], input_data: Gener
     Generate a Product Requirements Document (PRD) based on task description and codebase analysis.
     """
     logger.info(f"Tool called: generate_prd for task: {input_data.task_description[:50]}...")
-    
+
     # In the real implementation, this would likely call the Gemini API directly
     try:
         # Check if we have a Gemini API key
         api_key = ctx.deps.get_api_key("gemini")
         if not api_key:
             logger.warning("No Gemini API key found, using simulated response")
-        
+
         # Simulate API call to Gemini
         await asyncio.sleep(1)
-        
+
         # Use the LLM tool internally to simulate the real implementation
         # This nested tool pattern might be causing issues
-        analysis = await llm(ctx, LLMInput(
-            prompt=f"Analyze the implementation needs for: {input_data.task_description}",
-            model="gemini-2.5"  # This might be ignored in our simulation
-        ))
-        
+        analysis = await llm(
+            ctx,
+            LLMInput(
+                prompt=f"Analyze the implementation needs for: {input_data.task_description}",
+                model="gemini-2.5",  # This might be ignored in our simulation
+            ),
+        )
+
         # Return simulated PRD with the analysis
         return f"""
         # Product Requirements Document
@@ -265,6 +288,7 @@ async def generate_prd(ctx: RunContext[ArchitectDependencies], input_data: Gener
         logger.error(f"Error in generate_prd tool: {str(e)}", exc_info=True)
         return f"Error generating PRD: {str(e)}"
 
+
 async def main():
     try:
         # Set up dependencies similar to the real application
@@ -273,10 +297,10 @@ async def main():
             api_keys={
                 "openai": os.getenv("OPENAI_API_KEY"),
                 "gemini": os.getenv("GEMINI_API_KEY", ""),
-                "web_search": os.getenv("EXA_API_KEY", "")
-            }
+                "web_search": os.getenv("EXA_API_KEY", ""),
+            },
         )
-        
+
         # Example task request that would trigger multiple tools - make it more complex
         prompt = """
         Generate a comprehensive PRD for adding multi-model capability to our AI agent system, 
@@ -296,34 +320,38 @@ async def main():
         
         Make sure to analyze the existing codebase structure for compatibility.
         """
-        
+
         # Add model settings - this is the correct parameter name in this API version
         model_settings = {
             "temperature": 0.2,
             "top_p": 0.95,
             "max_tokens": 2000,
         }
-        
+
         # Run the agent - using the same pattern as in the real app
         logger.info("Running agent with complex tool set...")
         try:
             # Add more parameters to make it closer to the problem scenario
             # Use model parameter explicitly - this might be the key difference
             result = await agent.run(
-                prompt, 
-                deps=deps, 
+                prompt,
+                deps=deps,
                 model_settings=model_settings,
                 model="openai:gpt-4o",  # Explicitly set model again, which might create conflict
-                infer_name=True,        # Add additional parameters from signature
-                result_type=ArchitectResult  # Set result type again
+                infer_name=True,  # Add additional parameters from signature
+                result_type=ArchitectResult,  # Set result type again
             )
-            
+
             # Display results
             logger.info("\n--- Agent Result ---")
             logger.info(f"Success: {result is not None}")
-            first_200 = str(result.data.content)[:200] + "..." if len(str(result.data.content)) > 200 else str(result.data.content)
+            first_200 = (
+                str(result.data.content)[:200] + "..."
+                if len(str(result.data.content)) > 200
+                else str(result.data.content)
+            )
             logger.info(f"Data: {first_200}")
-            
+
             # Get usage statistics
             usage_data = result.usage()
             logger.info(f"Usage: {usage_data}")
@@ -334,11 +362,13 @@ async def main():
                 logger.error("FOUND THE ERROR! This is the same error as in production.")
             if "404" in str(e):
                 logger.error("FOUND A 404 ERROR! This might be related to our production issue.")
-        
+
     except Exception:
         logger.error("An error occurred:", exc_info=True)
         import traceback
+
         traceback.print_exc()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     asyncio.run(main())

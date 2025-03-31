@@ -9,5 +9,6 @@ from dataclasses import dataclass
 @dataclass
 class ArchitectDependencies:
     """Dependencies for the ArchitectAgent."""
+
     codebase_path: str
     api_keys: dict[str, str]

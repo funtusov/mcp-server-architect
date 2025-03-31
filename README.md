@@ -49,8 +49,8 @@ The system follows a modular design with the following key components:
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                       Agent Manager                             │
-│                (mcp_server_architect/agents/manager.py)         │
+│                       Agent Executor                            │
+│                (mcp_server_architect/agents/executor.py)        │
 └───┬─────────────────────┬────────────────────────┬──────────────┘
     │                     │                        │
     ▼                     ▼                        ▼
@@ -73,7 +73,7 @@ The system follows a modular design with the following key components:
    - Implements the public API (generate_prd, think)
    - Handles errors and logging
 
-3. **Agent Manager**: Creates and configures agents with appropriate models and tools
+3. **Agent Executor**: Creates and configures agents with appropriate models and tools
    - Selects models based on task (OpenAI or Gemini)
    - Uses direct model initialization for OpenAI models
    - Registers tools with the agent
@@ -95,8 +95,8 @@ The system follows a modular design with the following key components:
 
 1. User request → MCP Server Interface
 2. Interface routes request → Architect Core
-3. Core calls appropriate method on Agent Manager
-4. Agent Manager creates and configures agent
+3. Core calls appropriate method on Agent Executor
+4. Agent Executor creates and configures agent
 5. Agent executes with tools, accessing models as needed
 6. Results flow back through the same chain
 7. Formatted response returned to user

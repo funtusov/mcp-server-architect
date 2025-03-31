@@ -11,8 +11,7 @@ from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, 
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Load API keys from .env
@@ -25,21 +24,26 @@ if not os.getenv("OPENAI_API_KEY"):
 
 logger.info(f"Using OpenAI API Key: ...{os.getenv('OPENAI_API_KEY')[-4:]}")
 
+
 # Define agent dependencies to match actual application
 @dataclass
 class ArchitectDeps:
     codebase_path: str
     api_keys: dict[str, str]
 
+
 # Define the actual tool input model that matches our real application
 class GeneratePRDInput(BaseModel):
     task_description: str = Field(description="Description of the programming task")
     codebase_path: str = Field(description="Path to the codebase directory")
 
+
 # This will simulate our actual PRD result model
 class ArchitectResponse(str):
     """String subclass for response formatting"""
+
     pass
+
 
 # Determine initialization method based on command line argument
 use_direct = len(sys.argv) <= 1 or sys.argv[1] != "string"
@@ -47,12 +51,9 @@ use_direct = len(sys.argv) <= 1 or sys.argv[1] != "string"
 if use_direct:
     # Direct model initialization
     from pydantic_ai.models.openai import OpenAIModel
-    
+
     logger.info("Using direct model initialization")
-    model = OpenAIModel(
-        model_name="gpt-4o",
-        provider="openai"
-    )
+    model = OpenAIModel(model_name="gpt-4o", provider="openai")
 else:
     # Use string-based initialization
     logger.info("Using string-based model initialization")
@@ -80,8 +81,9 @@ agent = Agent(
     
     Format your response in markdown. Be concise but comprehensive.
     Use your tools strategically to gather all the information you need.
-    """
+    """,
 )
+
 
 # Simulated code_reader implementation
 @agent.tool
@@ -91,7 +93,7 @@ async def code_reader(ctx: RunContext[ArchitectDeps], input_data: GeneratePRDInp
     into a unified code context for the agent to analyze.
     """
     logger.info(f"Tool called: code_reader for path: {input_data.codebase_path}")
-    
+
     # Just simulate returning something meaningful about the codebase structure
     return """
     # Codebase Structure Analysis
@@ -112,6 +114,7 @@ async def code_reader(ctx: RunContext[ArchitectDeps], input_data: GeneratePRDInp
     Currently the system uses only Gemini models for all operations.
     """
 
+
 # Register the actual generate_prd tool we want to test
 @agent.tool
 async def generate_prd(ctx: RunContext[ArchitectDeps], input_data: GeneratePRDInput) -> ArchitectResponse:
@@ -120,13 +123,13 @@ async def generate_prd(ctx: RunContext[ArchitectDeps], input_data: GeneratePRDIn
     """
     logger.info(f"Tool called: generate_prd for task: {input_data.task_description[:50]}...")
     logger.info(f"Codebase path: {input_data.codebase_path}")
-    
+
     # This is a simplified version of the real implementation
     # In the real version, it would call Gemini API directly
-    
+
     # Get API key (in real implementation, this would be used)
     # api_key = ctx.deps.api_keys.get("gemini")
-    
+
     # For testing purposes, we just return a canned response
     prd = f"""
     # Product Requirements Document: {input_data.task_description}
@@ -155,17 +158,18 @@ async def generate_prd(ctx: RunContext[ArchitectDeps], input_data: GeneratePRDIn
     - API compatibility issues: Use adapter pattern
     - Testing complexity: Create test fixtures for each model
     """
-    
+
     return ArchitectResponse(prd)
+
 
 async def main():
     try:
         # Create dependencies that match our application's structure
         deps = ArchitectDeps(
             codebase_path="/projects/architect-mcp",
-            api_keys={"openai": os.getenv("OPENAI_API_KEY"), "gemini": os.getenv("GEMINI_API_KEY", "")}
+            api_keys={"openai": os.getenv("OPENAI_API_KEY"), "gemini": os.getenv("GEMINI_API_KEY", "")},
         )
-        
+
         # Example task request that would be similar to our real use case
         prompt = """
         Generate a PRD for adding multi-model capability to our AI agent system, 
@@ -175,24 +179,26 @@ async def main():
         Some tasks should use Gemini models (like PRD generation and thinking) 
         while others should use OpenAI models for general agent loops.
         """
-        
+
         # Run the agent
         logger.info("Running agent to test generate_prd tool...")
         result = await agent.run(prompt, deps=deps)
-        
+
         # Display results
         logger.info("\n--- Agent Result ---")
         logger.info(f"Success: {result is not None}")
         logger.info(f"Data: {str(result.data)[:200]}...")  # Show just the beginning
-        
+
         # Get usage statistics
         usage_data = result.usage()
         logger.info(f"Usage: {usage_data}")
-        
+
     except Exception:
         logger.error("An error occurred:", exc_info=True)
         import traceback
+
         traceback.print_exc()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     asyncio.run(main())

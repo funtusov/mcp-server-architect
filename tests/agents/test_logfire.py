@@ -21,8 +21,6 @@ def test_agent_instrumentation_called(mock_instrument_all):
     """Test that Agent.instrument_all is called for instrumentation."""
     # Call the instrument_all function
     Agent.instrument_all()
-    
+
     # Verify it was called
     mock_instrument_all.assert_called_once()
-
-

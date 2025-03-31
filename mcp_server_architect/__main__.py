@@ -117,17 +117,18 @@ def main():
         return architect.generate_prd(task_description, codebase_path)
 
     @server.tool()
-    def think(request: str) -> str:
+    def think(request: str, codebase_path: str = "") -> str:
         """
-        Provide reasoning assistance for a stuck LLM on a coding task.
+        Provide deep reasoning assistance for a project-related question or issue.
 
         Args:
             request (str): Detailed description of the coding task/issue and relevant code snippets
+            codebase_path (str): Path to the local codebase directory
 
         Returns:
             str: Reasoning guidance and potential solutions
         """
-        return architect.think(request)
+        return architect.think(request, codebase_path)
 
     # Start the MCP server
     logger.info(f"Starting Architect MCP server v{__version__}...")

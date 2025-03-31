@@ -131,4 +131,140 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"contents":[{"role":"user","parts":[{"text":"\n            Analyze the
+      following coding problem or question and provide reasoning assistance.\n            \n            If
+      a codebase path is provided, use the code_reader tool to examine relevant files.\n            \n            In
+      your response:\n            1. Break down the problem step by step\n            2.
+      Identify potential solutions or approaches\n            3. Explain your reasoning
+      thoroughly\n            4. Include relevant code examples where helpful\n            \n            Problem/Question:
+      How should I implement error handling in my calculator app?\n            "}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
+      are an expert software architect and technical lead with deep expertise in software
+      design and development.\n        \n        You can provide several types of
+      assistance:\n        1. Create Product Requirements Documents (PRDs) or High-Level
+      Design Documents\n        2. Analyze code and architecture\n        3. Provide
+      deep reasoning assistance and solutions for complex coding problems\n        \n        Use
+      the tools strategically to gather all the information you need:\n        - code_reader:
+      Read source code files from the codebase to understand the architecture\n        -
+      web_search: Find relevant technical information online\n        - llm: Use external
+      LLM assistance when needed\n        \n        Format your responses in markdown.
+      Be concise but thorough.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
+      and analyze source code files from the specified codebase path, combining them\ninto
+      a unified code context for the agent to analyze.</summary>\n<returns>\n<description>A
+      string containing the code context or error message</description>\n</returns>","parameters":{"description":"Input
+      schema for the code reader tool.","properties":{"paths":{"description":"List
+      of file or directory paths to read, relative to the base codebase path","items":{"type":"string"},"type":"array"},"filter_extensions":{"items":{"type":"string"},"type":"array","nullable":true},"max_files":{"type":"integer","nullable":true}},"required":["paths"],"type":"object"}},{"name":"web_search","description":"<summary>Search
+      the web for information on a given query using Exa API.</summary>\n<returns>\n<description>A
+      string containing the search results or error message</description>\n</returns>","parameters":{"description":"Input
+      schema for the web search tool.","properties":{"query":{"description":"The search
+      query to execute","type":"string"},"num_results":{"type":"integer","nullable":true}},"required":["query"],"type":"object"}},{"name":"llm","description":"<summary>Execute
+      a prompt against a configured LLM.</summary>\n<returns>\n<description>The text
+      response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
+      schema for the LLM tool.","properties":{"prompt":{"description":"The prompt
+      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true},"max_tokens":{"type":"integer","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '3218'
+      content-type:
+      - application/json
+      host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - pydantic-ai/0.0.46
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 31 Mar 2025 16:28:34 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=31377
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -15,9 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for agent loop with multiple steps before returning a response
 
 ### Changed
-- Refactored `Architect` class to use AgentManager for running agent loops
+- Refactored `Architect` class to use AgentExecutor for running agent loops
+- Renamed `AgentManager` to `AgentExecutor` for better clarity on its role
+- Consolidated separate agents into a single unified agent with task-specific prompts
 - Updated default Gemini model to `gemini-2.5-pro-exp-03-25`
 - Improved error handling and logging across components
+- Added codebase_path parameter to think tool for better reasoning with codebase context
 
 ### Fixed
 - Various linting issues and code style improvements

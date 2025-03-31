@@ -149,7 +149,7 @@ try:
     @server.tool()
     def think(request: str) -> str:
         """
-        Provide reasoning assistance for a stuck LLM on a coding task.
+        Provide deep reasoning assistance for a project-related question or issue.
         """
         return architect.think(request)
     

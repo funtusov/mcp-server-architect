@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 MODEL_CONFIGS = {
     # Gemini models
     "gemini-2.5": "google-gla:gemini-2.5-pro-exp-03-25",
-    
     # OpenAI models
     "gpt4o": "openai:gpt-4o",
 }
@@ -27,20 +26,21 @@ DEFAULT_TASK_MODELS = {
     "think": os.getenv("THINK_MODEL", "gemini-2.5"),
 }
 
+
 def get_model_string(task: str = None) -> str:
     """
     Get the appropriate model string for a given task.
-    
+
     Args:
         task: Optional task name to get a specific model for
-        
+
     Returns:
         The PydanticAI model string to use
     """
     model_id = DEFAULT_TASK_MODELS.get(task, DEFAULT_AGENT_MODEL)
-        
+
     if model_id not in MODEL_CONFIGS:
         logger.warning(f"Unknown model ID: {model_id}, falling back to {DEFAULT_AGENT_MODEL}")
         model_id = DEFAULT_AGENT_MODEL
-        
+
     return MODEL_CONFIGS[model_id]

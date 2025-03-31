@@ -2,6 +2,6 @@
 Agent system module for MCP Architect.
 """
 
-from mcp_server_architect.agents.manager import AgentManager
+from mcp_server_architect.agents.executor import AgentExecutor
 
-__all__ = ["AgentManager"]
+__all__ = ["AgentExecutor"]
