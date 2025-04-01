@@ -1,6 +1,16 @@
 interactions:
 - request:
-    body: '{"contents":[{"role":"user","parts":[{"text":"\n            Create a Product
+    body: '{"messages":[{"role":"system","content":"\n        You are an expert software
+      architect and technical lead with deep expertise in software design and development.\n        \n        You
+      can provide several types of assistance:\n        1. Create Product Requirements
+      Documents (PRDs) or High-Level Design Documents\n        2. Analyze code and
+      architecture\n        3. Provide deep reasoning assistance and solutions for
+      complex coding problems\n        \n        Use the tools strategically to gather
+      all the information you need:\n        - code_reader: Read source code files
+      from the codebase to understand the architecture\n        - web_search: Find
+      relevant technical information online\n        - llm: Use external LLM assistance
+      when needed\n        \n        Format your responses in markdown. Be concise
+      but thorough.\n        "},{"role":"user","content":"\n            Create a Product
       Requirements Document (PRD) or High-Level Design Document based on the following
       task.\n            \n            IMPORTANT: Before beginning analysis, use the
       code_reader tool to examine the codebase structure\n            and understand
@@ -9,87 +19,169 @@ interactions:
       and constraints\n            3. Proposed architecture/design\n            4.
       Implementation plan with specific files to modify\n            5. Potential
       challenges and mitigations\n            \n            Task details: Create a
-      simple calculator app with basic operations\n            "}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
-      are an expert software architect and technical lead with deep expertise in software
-      design and development.\n        \n        You can provide several types of
-      assistance:\n        1. Create Product Requirements Documents (PRDs) or High-Level
-      Design Documents\n        2. Analyze code and architecture\n        3. Provide
-      deep reasoning assistance and solutions for complex coding problems\n        \n        Use
-      the tools strategically to gather all the information you need:\n        - code_reader:
-      Read source code files from the codebase to understand the architecture\n        -
-      web_search: Find relevant technical information online\n        - llm: Use external
-      LLM assistance when needed\n        \n        Format your responses in markdown.
-      Be concise but thorough.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
+      simple calculator app with basic operations\n            "}],"model":"gpt-4o-2024-11-20","n":1,"stream":false,"tool_choice":"auto","tools":[{"type":"function","function":{"name":"code_reader","description":"<summary>Read
       and analyze source code files from the specified codebase path, combining them\ninto
       a unified code context for the agent to analyze.</summary>\n<returns>\n<description>A
       string containing the code context or error message</description>\n</returns>","parameters":{"description":"Input
       schema for the code reader tool.","properties":{"paths":{"description":"List
-      of file or directory paths to read, relative to the base codebase path","items":{"type":"string"},"type":"array"},"filter_extensions":{"items":{"type":"string"},"type":"array","nullable":true},"max_files":{"type":"integer","nullable":true}},"required":["paths"],"type":"object"}},{"name":"web_search","description":"<summary>Search
+      of file or directory paths to read, relative to the base codebase path","items":{"type":"string"},"type":"array"},"filter_extensions":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"description":"Optional
+      list of file extensions to include (e.g., [''.py'', ''.js''])"},"max_files":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Maximum
+      number of files to include"}},"required":["paths"],"title":"CodeReaderInput","type":"object"}}},{"type":"function","function":{"name":"web_search","description":"<summary>Search
       the web for information on a given query using Exa API.</summary>\n<returns>\n<description>A
       string containing the search results or error message</description>\n</returns>","parameters":{"description":"Input
       schema for the web search tool.","properties":{"query":{"description":"The search
-      query to execute","type":"string"},"num_results":{"type":"integer","nullable":true}},"required":["query"],"type":"object"}},{"name":"llm","description":"<summary>Execute
-      a prompt against a configured LLM using litellm.</summary>\n<returns>\n<description>The
-      text response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
+      query to execute","type":"string"},"num_results":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":10,"description":"Number
+      of results to return (max 25)"}},"required":["query"],"title":"WebSearchInput","type":"object"}}},{"type":"function","function":{"name":"llm","description":"<summary>Execute
+      a prompt against a specialized LLM model to perform targeted reasoning, problem-solving,
+      or creative tasks.\n\nUse this tool when you need to leverage specific model
+      strengths for a particular sub-task. Each model has different\ncapabilities
+      that may be more suitable for certain types of queries. For example:\n\n- Use
+      GPT-4o for complex reasoning, creative writing, or general-purpose tasks\n-
+      Use Gemini for up-to-date technical information, explanations, and code understanding\n-
+      Use Claude for nuanced analysis, careful instructions, or processing lengthy
+      context\n- Use DeepSeek for specialized code generation and technical implementation\n\nWhen
+      to use this tool:\n- When you need specialized expertise beyond your capabilities\n-
+      For complex sub-problems that benefit from targeted reasoning\n- When you want
+      to compare multiple approaches to a problem\n- For generating code with specific
+      requirements</summary>\n<returns>\n<description>The text response from the selected
+      LLM or an error message if the request failed</description>\n</returns>","parameters":{"description":"Input
       schema for the LLM tool.","properties":{"prompt":{"description":"The prompt
-      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
+      to send to the LLM","type":"string"},"model":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"\n        Optional
+      model identifier. Specify one of these model keys:\n        \n        - ''gpt4o''
+      (DEFAULT): OpenAI''s GPT-4o - Excellent multimodal model with strong reasoning,
+      coding abilities, and creative tasks. Features fast processing speed and real-time
+      thinking. Best for complex problems requiring deep understanding, coding, and
+      general-purpose tasks.\n        \n        - ''gemini-2.5-pro'': Google''s Gemini
+      2.5 Pro - State-of-the-art reasoning model with structured thinking capabilities
+      and advanced code generation. Excels at mathematics, science, and complex reasoning
+      tasks. Top performer on benchmark leaderboards. Best for technical documentation,
+      coding, and step-by-step problem-solving.\n        \n        - ''claude-3.7-sonnet'':
+      Anthropic''s Claude 3.7 Sonnet - Features hybrid reasoning with transparent
+      \"thinking\" processes. Superior at detailed analysis, long context understanding
+      (up to 128K tokens), and careful instruction following. Best for nuanced tasks
+      requiring critical thinking, comprehensive explanations, and content generation.\n        \n        -
+      ''deepseek-v3'': DeepSeek-v3-0324 - Specialized large-scale MoE (Mixture-of-Experts)
+      model optimized for code generation and technical problem-solving. Exceptional
+      at programming tasks, algorithm implementation, and debugging. Features fast
+      response times and efficiency. Best for software engineering tasks, coding challenges,
+      and technical implementations.\n        "},"temperature":{"anyOf":[{"type":"number"},{"type":"null"}],"default":null,"description":"Temperature
+      for LLM generation (0.0-1.0). Lower values (0.0-0.3) for factual/deterministic
+      responses, higher values (0.7-1.0) for creative/varied responses. Some models
+      like Claude may override this setting when using thinking mode."}},"required":["prompt"],"title":"LLMInput","type":"object"}}}]}'
     headers:
       accept:
-      - '*/*'
+      - application/json
       accept-encoding:
       - gzip, deflate
       connection:
       - keep-alive
       content-length:
-      - '3321'
+      - '6424'
       content-type:
       - application/json
       host:
-      - generativelanguage.googleapis.com
+      - api.openai.com
       user-agent:
-      - pydantic-ai/0.0.48
+      - AsyncOpenAI/Python 1.70.0
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.70.0
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
     method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+    uri: https://api.openai.com/v1/chat/completions
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAC/3WSTW+CQBCG7/yKzV56EWM0eujV9tjYtKRpUo0ZYcSNyy7ZHRKM8b93QEGgdQ9k
-        mXc+n51zIISMwSQqAUIvn8UPW4Q4199Ks4bQEAuNiY05OLr7Xs+5c2cXwrIKkqsjnEZCIz154Ynj
-        xO4ksIRMGWVSQQcUsU1wBx5Zd0VMhcPx2qyN7CS8jB5X2hcmJmXNErTutXnTDWRYdVKV2TqEBJ0c
-        DZ3Apf6fYFYyKLd7pWs208kwsIZBhyGMVhzLP9bNwHIJHv3d75t7XemsrufJeB7dpG8ByT2D9YcP
-        BG9N5fYZrd7beaUyCZZsngRNgTq1LDyk+IYEvAbQgpC5s1lOkT2iWdqiXoPF7AahszY9h9nippMl
-        0P3YRaN1EvsXLqt0F2Fn1XhK0IpO1SjR63fUeTou0O+rYRE0mGsqV1Bf6Ly6EkmxWr5wOp6H3EaI
-        ZR5OZuF0LoNL8AuqIyKTEAMAAA==
+        H4sIAAAAAAAAA4xT72+bMBD9zl9h3eckA5IuSj4u1dRNWrVJ7X6VCrnmCE6NbdlHlyjK/z4BCZC0
+        k8YHON3ze/e4O+8DxkBmsGQgCk6itGr84ebOrm7jQtCX93efPl9/1y6r8Pn6o7v/KmBUM8zTBgWd
+        WBNhSquQpNEtLBxywlo1ms+mV+HVIo4boDQZqpq2tjSemXEcxrNxFI3j8EgsjBToYckeAsYY2zfv
+        2qLOcAtLFo5OmRK952uEZXeIMXBG1Rng3ktPXBOMelAYTahr17pSagCQMSoVXKm+cPvsB3HfJ65U
+        Kosf8tdN+fJ7dXu/WU1D++fbz533dlCvld7ZxlBeadH1Z4B3+eVFMcZA87LhCpNh6pBn6C7ojAF3
+        66pETbV12CdgORU+geVDAu8SeBwlkEtF6FLcEmovjT6ik41PYJTAhI7fjd+eEsegoFK1kfDdIaNb
+        2ZJv01wqrOWi8ABnxg7BW/HjoOcO88pz9XoYXGtDvO5JM43HI3LoBq/M2jrz5C+okEstfVE3yjf9
+        HI41OBlpLEB1tjlgnSktpWSesSkaRdNpKwv9Zvfw7LiEQIa4GtLmJ9qZYpohcdksV7fPgosCs57b
+        7zWvMmkGQDD4+9d23tJuOyD1+n/ke0AItIRZah1mUpz/cn/MYX3z/3Ws63NjGDy6FykwJYmunkiG
+        Oa9UeynB7zxhmeZSr9FZJ5ubCblN82gRz3Axn80hOAR/AQAA//8DAPsloTyiBAAA
     headers:
-      Alt-Svc:
-      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      CF-RAY:
+      - 9297a62fbe23867a-MAD
+      Connection:
+      - keep-alive
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/json; charset=UTF-8
+      - application/json
       Date:
-      - Tue, 01 Apr 2025 08:59:40 GMT
+      - Tue, 01 Apr 2025 11:12:03 GMT
       Server:
-      - scaffolding on HTTPServer2
-      Server-Timing:
-      - gfet4t7; dur=5218
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=GKV.HzNQj3cNhH7iS8hleMHyveMyWqdxvgt5CeinLyA-1743505923-1.0.1.1-b2_6uQGxYL5oi8CPdzgkfg4N3414ae1Vufub8aFGC4gJyzFcOIMPPpZfx25G0R3sgF_aoQEukOlm8W82ms77cUAVlKUIR6OpUD8XhWHeVGc;
+        path=/; expires=Tue, 01-Apr-25 11:42:03 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=aRhG7N3z5m5pEz9Wjd2qZgDs7b31C1S4ZpZgYXQR32Y-1743505923350-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       Transfer-Encoding:
       - chunked
-      Vary:
-      - Origin
-      - X-Origin
-      - Referer
       X-Content-Type-Options:
       - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - '0'
+      access-control-expose-headers:
+      - X-Request-ID
+      alt-svc:
+      - h3=":443"; ma=86400
+      cf-cache-status:
+      - DYNAMIC
+      openai-organization:
+      - user-c4qiapq5nsn18pakt4nqcpfn
+      openai-processing-ms:
+      - '712'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-ratelimit-limit-requests:
+      - '5000'
+      x-ratelimit-limit-tokens:
+      - '450000'
+      x-ratelimit-remaining-requests:
+      - '4999'
+      x-ratelimit-remaining-tokens:
+      - '449622'
+      x-ratelimit-reset-requests:
+      - 12ms
+      x-ratelimit-reset-tokens:
+      - 50ms
+      x-request-id:
+      - req_c47e664b516433935e6960ea9b42a724
     status:
       code: 200
       message: OK
 - request:
-    body: '{"contents":[{"role":"user","parts":[{"text":"\n            Create a Product
+    body: '{"messages":[{"role":"system","content":"\n        You are an expert software
+      architect and technical lead with deep expertise in software design and development.\n        \n        You
+      can provide several types of assistance:\n        1. Create Product Requirements
+      Documents (PRDs) or High-Level Design Documents\n        2. Analyze code and
+      architecture\n        3. Provide deep reasoning assistance and solutions for
+      complex coding problems\n        \n        Use the tools strategically to gather
+      all the information you need:\n        - code_reader: Read source code files
+      from the codebase to understand the architecture\n        - web_search: Find
+      relevant technical information online\n        - llm: Use external LLM assistance
+      when needed\n        \n        Format your responses in markdown. Be concise
+      but thorough.\n        "},{"role":"user","content":"\n            Create a Product
       Requirements Document (PRD) or High-Level Design Document based on the following
       task.\n            \n            IMPORTANT: Before beginning analysis, use the
       code_reader tool to examine the codebase structure\n            and understand
@@ -98,122 +190,155 @@ interactions:
       and constraints\n            3. Proposed architecture/design\n            4.
       Implementation plan with specific files to modify\n            5. Potential
       challenges and mitigations\n            \n            Task details: Create a
-      simple calculator app with basic operations\n            "}]},{"role":"model","parts":[{"text":"Okay,
-      let''s start by examining the codebase structure.\n\n"},{"functionCall":{"name":"code_reader","args":{"max_files":20,"paths":["."]}}}]},{"role":"user","parts":[{"functionResponse":{"name":"code_reader","response":{"return_value":"#
-      Code Context\nIncluding 1 files from the specified paths.\n\n# File: main.py\n```\n\ndef
-      add(a, b):\n    \"\"\"Add two numbers.\"\"\"\n    return a + b\n\ndef subtract(a,
-      b):\n    \"\"\"Subtract b from a.\"\"\"\n    return a - b\n\n```\n\n"}}}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
-      are an expert software architect and technical lead with deep expertise in software
-      design and development.\n        \n        You can provide several types of
-      assistance:\n        1. Create Product Requirements Documents (PRDs) or High-Level
-      Design Documents\n        2. Analyze code and architecture\n        3. Provide
-      deep reasoning assistance and solutions for complex coding problems\n        \n        Use
-      the tools strategically to gather all the information you need:\n        - code_reader:
-      Read source code files from the codebase to understand the architecture\n        -
-      web_search: Find relevant technical information online\n        - llm: Use external
-      LLM assistance when needed\n        \n        Format your responses in markdown.
-      Be concise but thorough.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
+      simple calculator app with basic operations\n            "},{"role":"assistant","tool_calls":[{"id":"call_ihWiYHmvZCNUjC30pwQXyssp","type":"function","function":{"name":"code_reader","arguments":"{\"paths\":[\"/\"],\"filter_extensions\":[\".js\",\".ts\",\".jsx\",\".tsx\",\".html\",\".css\",\".json\"],\"max_files\":10}"}}]},{"role":"tool","tool_call_id":"call_ihWiYHmvZCNUjC30pwQXyssp","content":"No
+      files were found matching the specified criteria. Error: Path / attempts to
+      access files outside the codebase directory"}],"model":"gpt-4o-2024-11-20","n":1,"stream":false,"tool_choice":"auto","tools":[{"type":"function","function":{"name":"code_reader","description":"<summary>Read
       and analyze source code files from the specified codebase path, combining them\ninto
       a unified code context for the agent to analyze.</summary>\n<returns>\n<description>A
       string containing the code context or error message</description>\n</returns>","parameters":{"description":"Input
       schema for the code reader tool.","properties":{"paths":{"description":"List
-      of file or directory paths to read, relative to the base codebase path","items":{"type":"string"},"type":"array"},"filter_extensions":{"items":{"type":"string"},"type":"array","nullable":true},"max_files":{"type":"integer","nullable":true}},"required":["paths"],"type":"object"}},{"name":"web_search","description":"<summary>Search
+      of file or directory paths to read, relative to the base codebase path","items":{"type":"string"},"type":"array"},"filter_extensions":{"anyOf":[{"items":{"type":"string"},"type":"array"},{"type":"null"}],"default":null,"description":"Optional
+      list of file extensions to include (e.g., [''.py'', ''.js''])"},"max_files":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":null,"description":"Maximum
+      number of files to include"}},"required":["paths"],"title":"CodeReaderInput","type":"object"}}},{"type":"function","function":{"name":"web_search","description":"<summary>Search
       the web for information on a given query using Exa API.</summary>\n<returns>\n<description>A
       string containing the search results or error message</description>\n</returns>","parameters":{"description":"Input
       schema for the web search tool.","properties":{"query":{"description":"The search
-      query to execute","type":"string"},"num_results":{"type":"integer","nullable":true}},"required":["query"],"type":"object"}},{"name":"llm","description":"<summary>Execute
-      a prompt against a configured LLM using litellm.</summary>\n<returns>\n<description>The
-      text response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
+      query to execute","type":"string"},"num_results":{"anyOf":[{"type":"integer"},{"type":"null"}],"default":10,"description":"Number
+      of results to return (max 25)"}},"required":["query"],"title":"WebSearchInput","type":"object"}}},{"type":"function","function":{"name":"llm","description":"<summary>Execute
+      a prompt against a specialized LLM model to perform targeted reasoning, problem-solving,
+      or creative tasks.\n\nUse this tool when you need to leverage specific model
+      strengths for a particular sub-task. Each model has different\ncapabilities
+      that may be more suitable for certain types of queries. For example:\n\n- Use
+      GPT-4o for complex reasoning, creative writing, or general-purpose tasks\n-
+      Use Gemini for up-to-date technical information, explanations, and code understanding\n-
+      Use Claude for nuanced analysis, careful instructions, or processing lengthy
+      context\n- Use DeepSeek for specialized code generation and technical implementation\n\nWhen
+      to use this tool:\n- When you need specialized expertise beyond your capabilities\n-
+      For complex sub-problems that benefit from targeted reasoning\n- When you want
+      to compare multiple approaches to a problem\n- For generating code with specific
+      requirements</summary>\n<returns>\n<description>The text response from the selected
+      LLM or an error message if the request failed</description>\n</returns>","parameters":{"description":"Input
       schema for the LLM tool.","properties":{"prompt":{"description":"The prompt
-      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
+      to send to the LLM","type":"string"},"model":{"anyOf":[{"type":"string"},{"type":"null"}],"default":null,"description":"\n        Optional
+      model identifier. Specify one of these model keys:\n        \n        - ''gpt4o''
+      (DEFAULT): OpenAI''s GPT-4o - Excellent multimodal model with strong reasoning,
+      coding abilities, and creative tasks. Features fast processing speed and real-time
+      thinking. Best for complex problems requiring deep understanding, coding, and
+      general-purpose tasks.\n        \n        - ''gemini-2.5-pro'': Google''s Gemini
+      2.5 Pro - State-of-the-art reasoning model with structured thinking capabilities
+      and advanced code generation. Excels at mathematics, science, and complex reasoning
+      tasks. Top performer on benchmark leaderboards. Best for technical documentation,
+      coding, and step-by-step problem-solving.\n        \n        - ''claude-3.7-sonnet'':
+      Anthropic''s Claude 3.7 Sonnet - Features hybrid reasoning with transparent
+      \"thinking\" processes. Superior at detailed analysis, long context understanding
+      (up to 128K tokens), and careful instruction following. Best for nuanced tasks
+      requiring critical thinking, comprehensive explanations, and content generation.\n        \n        -
+      ''deepseek-v3'': DeepSeek-v3-0324 - Specialized large-scale MoE (Mixture-of-Experts)
+      model optimized for code generation and technical problem-solving. Exceptional
+      at programming tasks, algorithm implementation, and debugging. Features fast
+      response times and efficiency. Best for software engineering tasks, coding challenges,
+      and technical implementations.\n        "},"temperature":{"anyOf":[{"type":"number"},{"type":"null"}],"default":null,"description":"Temperature
+      for LLM generation (0.0-1.0). Lower values (0.0-0.3) for factual/deterministic
+      responses, higher values (0.7-1.0) for creative/varied responses. Some models
+      like Claude may override this setting when using thinking mode."}},"required":["prompt"],"title":"LLMInput","type":"object"}}}]}'
     headers:
       accept:
-      - '*/*'
+      - application/json
       accept-encoding:
       - gzip, deflate
       connection:
       - keep-alive
       content-length:
-      - '3838'
+      - '6887'
       content-type:
       - application/json
+      cookie:
+      - __cf_bm=GKV.HzNQj3cNhH7iS8hleMHyveMyWqdxvgt5CeinLyA-1743505923-1.0.1.1-b2_6uQGxYL5oi8CPdzgkfg4N3414ae1Vufub8aFGC4gJyzFcOIMPPpZfx25G0R3sgF_aoQEukOlm8W82ms77cUAVlKUIR6OpUD8XhWHeVGc;
+        _cfuvid=aRhG7N3z5m5pEz9Wjd2qZgDs7b31C1S4ZpZgYXQR32Y-1743505923350-0.0.1.1-604800000
       host:
-      - generativelanguage.googleapis.com
+      - api.openai.com
       user-agent:
-      - pydantic-ai/0.0.48
+      - AsyncOpenAI/Python 1.70.0
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.70.0
+      x-stainless-read-timeout:
+      - '600'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
     method: POST
-    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+    uri: https://api.openai.com/v1/chat/completions
   response:
     body:
       string: !!binary |
-        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
-        RkeMCNSibHzwanx4NHj25dl/AbVdV4FsHAAA
+        H4sIAAAAAAAAAwAAAP//dFRNTxsxEL3nV0x9aSslUbIkgnCp2qKqXCpKuVUomoxnsy5ej2XPUlDF
+        f6+8C0lo4eLDvHlvPvzsPyMA46w5BUMNKrXRTz59vYpn51+6q2/L2+rS0vLHIn2/qZJtVndsxoUh
+        m19M+sSakrTRszoJA0yJUbmozo8XR8vZclUd9UArln2hbaNOFjKpZtViMp9PqtkjsRFHnM0p/BwB
+        APzpz9JisHxnTmE2foq0nDNu2ZzukgBMEl8iBnN2WTGoGe9BkqAc+q7PFTJzm0EbVDgHks7b8FYB
+        iTiXMAOJ5Q1mhqypI+0ST+GqcXlIhg2D7RhUAAO4QJISk4IkcGFQcRvPEFGbKVwJxCTEbIHrmknd
+        Lfv7MZxDKDHymJzeg4S+8q5gUSsBL4RluyD1s9am8BkD3EtX1G+d5Ud0aKWULgoIm+S4BsuZkouH
+        QnznsrqwBUzUOOWhKgYLytQE8bJ1nKHLbOGdqwFj9I5w4/n9B/jolVPA/SyEAWzCWnvti8szwAyu
+        hqyY+ip1khYyJVRqpnDhuazXs0LLcBPk95vD60pcdxmLW0Ln/QGAIYj2++iNcv2IPOys4WUbk2zy
+        P1RTu+Bys06MWUKxQVaJpkcfRgDXvQW7Z64yMUkbda1yw325eTWrBkGzd/0ePnkCVRT9Ie1kMX5B
+        cW1Z0fl8YGNDSA3bA+58We1mwM462WOz0cHo/3f0kvwwvgvbA5VX5fcAEUdlu46JraPnU+/TEpeP
+        4bW03ar7hk3mdOuI1+o4leuwXGPnhzdr8n1Wbte1C1tOMbnh4dZxXc9X1YJXx4tjM3oY/QUAAP//
+        AwCJwpFAwQQAAA==
     headers:
-      Alt-Svc:
-      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      CF-RAY:
+      - 9297a6356c85867a-MAD
+      Connection:
+      - keep-alive
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/json; charset=UTF-8
+      - application/json
       Date:
-      - Tue, 01 Apr 2025 08:59:57 GMT
+      - Tue, 01 Apr 2025 11:12:04 GMT
       Server:
-      - scaffolding on HTTPServer2
-      Server-Timing:
-      - gfet4t7; dur=16917
+      - cloudflare
       Transfer-Encoding:
       - chunked
-      Vary:
-      - Origin
-      - X-Origin
-      - Referer
       X-Content-Type-Options:
       - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - '0'
+      access-control-expose-headers:
+      - X-Request-ID
+      alt-svc:
+      - h3=":443"; ma=86400
+      cf-cache-status:
+      - DYNAMIC
+      openai-organization:
+      - user-c4qiapq5nsn18pakt4nqcpfn
+      openai-processing-ms:
+      - '1223'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-ratelimit-limit-requests:
+      - '5000'
+      x-ratelimit-limit-tokens:
+      - '450000'
+      x-ratelimit-remaining-requests:
+      - '4999'
+      x-ratelimit-remaining-tokens:
+      - '449588'
+      x-ratelimit-reset-requests:
+      - 12ms
+      x-ratelimit-reset-tokens:
+      - 54ms
+      x-request-id:
+      - req_d12f6494a17e1386d4531598b8a2a983
     status:
       code: 200
       message: OK

@@ -10,7 +10,7 @@ import logfire
 from pydantic_ai import Agent
 from pydantic_ai.models.openai import OpenAIModel
 
-from mcp_server_architect.models import get_model_string
+# No model selection import needed anymore
 from mcp_server_architect.tools.code_reader import code_reader
 from mcp_server_architect.tools.llm import llm
 from mcp_server_architect.tools.web_search import web_search
@@ -55,20 +55,15 @@ class AgentExecutor:
 
         return api_keys
 
-    def _create_agent(self, task: str = None) -> Agent:
+    def _create_agent(self) -> Agent:
         """
         Create a PydanticAI agent with the architect system prompt.
-        Uses direct model initialization for OpenAI models.
-
-        Args:
-            task: Optional task name to select the appropriate model
+        Uses GPT-4o as the only model for all agent operations.
 
         Returns:
             A configured PydanticAI Agent
         """
         # Set API keys in environment for pydantic-ai to use
-        if "gemini" in self.api_keys:
-            os.environ["GEMINI_API_KEY"] = self.api_keys["gemini"]
         if "openai" in self.api_keys:
             os.environ["OPENAI_API_KEY"] = self.api_keys["openai"]
 
@@ -89,33 +84,19 @@ class AgentExecutor:
         Format your responses in markdown. Be concise but thorough.
         """
 
-        # Get the appropriate model string for this task
-        model_string = get_model_string(task)
-        logger.info(f"Creating agent with model: {model_string}")
+        # Always use GPT-4o for the agent
+        model_name = "gpt-4o-2024-11-20"
+        logger.info(f"Creating agent with OpenAI model: {model_name}")
 
-        # For OpenAI models, use direct initialization to avoid compatibility issues
-        if model_string.startswith("openai:"):
-            # Extract just the model name from the string
-            model_name = model_string.split(":", 1)[1]
-            logger.info(f"Using direct model initialization for OpenAI model: {model_name}")
+        # Create OpenAI model instance directly
+        model = OpenAIModel(model_name=model_name, provider="openai")
 
-            # Create OpenAI model instance directly
-            model = OpenAIModel(model_name=model_name, provider="openai")
-
-            # Create agent with explicit model instance
-            agent = Agent(
-                model,
-                deps_type=ArchitectDependencies,
-                system_prompt=system_prompt,
-            )
-        else:
-            # For non-OpenAI models (like Gemini), use the standard string format
-            logger.info(f"Using string-based initialization for model: {model_string}")
-            agent = Agent(
-                model_string,
-                deps_type=ArchitectDependencies,
-                system_prompt=system_prompt,
-            )
+        # Create agent with explicit model instance
+        agent = Agent(
+            model,
+            deps_type=ArchitectDependencies,
+            system_prompt=system_prompt,
+        )
 
         # Register all tools
         agent.tool(code_reader)
@@ -139,8 +120,8 @@ class AgentExecutor:
         logger.info(f"Generating PRD for task: {task_description[:50]}...")
         logger.info(f"Using codebase path: {codebase_path}")
 
-        # Create the agent with the task-specific model (using "generate_prd" task)
-        agent = self._create_agent(task="generate_prd")
+        # Create the agent
+        agent = self._create_agent()
 
         try:
             # Prepare dependencies
@@ -191,8 +172,8 @@ class AgentExecutor:
         logger.info(f"Analyzing codebase for request: {request[:50]}...")
         logger.info(f"Using codebase path: {codebase_path}")
 
-        # Create the unified agent
-        agent = self._create_agent(task="think")
+        # Create the agent
+        agent = self._create_agent()
 
         try:
             # Prepare dependencies

@@ -89,6 +89,15 @@ This document outlines the complete process for building, testing, and publishin
    # If the version is found, you should see output like: "version":"0.1.4"
    ```
 
+7. **Clean Up Dist Directory**
+   ```bash
+   # Clean up the dist directory to avoid accumulating and re-uploading old packages
+   rm -rf dist/*
+   
+   # Verify the cleanup
+   ls -la dist/
+   ```
+
 ## Troubleshooting
 
 If you encounter issues during the publish process:

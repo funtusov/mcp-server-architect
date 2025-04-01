@@ -17,25 +17,21 @@ logger = logging.getLogger(__name__)
 
 @pytest.mark.skipif(not os.getenv("OPENAI_API_KEY"), reason="OPENAI_API_KEY not set")
 def test_create_agent_with_multiple_tools():
-    """Test creating an agent with multiple tools using both initialization methods."""
+    """Test creating an agent with GPT-4o."""
     # Create the agent executor
     executor = AgentExecutor()
 
-    # Create an agent for each supported model type
-    logger.info("Testing agent creation with multiple tools")
+    # Create the agent
+    logger.info("Testing agent creation with GPT-4o")
 
-    # Test creating agent with GPT-4o (direct initialization)
-    agent_openai = executor._create_agent(task=None)
+    # Create the agent with GPT-4o
+    agent = executor._create_agent()
 
-    # Test creating agent with Gemini (string initialization)
-    agent_gemini = executor._create_agent(task="generate_prd")
-
-    # Verify the agents were created
-    assert agent_openai is not None
-    assert agent_gemini is not None
+    # Verify the agent was created
+    assert agent is not None
 
     # Log success
-    logger.info("Successfully created agents with multiple tools")
+    logger.info("Successfully created agent with GPT-4o")
 
 
 @pytest.mark.skipif(not os.getenv("OPENAI_API_KEY"), reason="OPENAI_API_KEY not set")

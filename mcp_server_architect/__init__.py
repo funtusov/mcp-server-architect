@@ -6,4 +6,4 @@ It exposes tools to generate Product Requirements Documents (PRDs) based on code
 and to provide reasoning assistance for coding tasks.
 """
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
