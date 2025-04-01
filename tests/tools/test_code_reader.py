@@ -30,7 +30,7 @@ class TestCodeReader:
     def test_data_path(self):
         """Return the path to the test data directory."""
         return os.path.join(os.path.dirname(os.path.dirname(__file__)), "test_data", "code_reader")
-    
+
     @pytest.fixture
     def ctx(self, test_data_path):
         """Create a real RunContext for testing."""
@@ -42,7 +42,7 @@ class TestCodeReader:
             model="gpt-4o",
             usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
             prompt="test prompt",
-            retry=0
+            retry=0,
         )
 
     def test_is_within_codebase(self):
@@ -179,7 +179,7 @@ class TestCodeReader:
             model="gpt-4o",
             usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
             prompt="test prompt",
-            retry=0
+            retry=0,
         )
         result = await code_reader(empty_ctx, input_data)
         assert "Error: No codebase path provided" in result

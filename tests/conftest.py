@@ -68,5 +68,3 @@ pytest.recording_vcr_kwargs = {
     "path_transformer": lambda path: os.path.join(os.path.dirname(__file__), "cassettes", os.path.basename(path)),
     "match_on": ["method", "scheme", "host", "port", "path", "query"],
 }
-
-

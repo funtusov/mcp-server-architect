@@ -21,7 +21,7 @@ def create_run_context(api_key):
         model="gpt-4o",
         usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
         prompt="test prompt",
-        retry=0
+        retry=0,
     )
 
 

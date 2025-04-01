@@ -145,20 +145,20 @@ def main():
             str: Reasoning guidance and potential solutions
         """
         return architect.think(request, codebase_path)
-    
+
     @server.tool()
     async def llm(prompt: str, model: str = None, temperature: float = None) -> str:
         """
         Execute a prompt against a specialized LLM model directly.
-        
+
         Args:
             prompt: The text prompt to send to the LLM
             model: Optional model identifier (gpt4o, gemini-2.5-pro, claude-3.7-sonnet, deepseek-v3)
             temperature: Optional temperature setting (0.0-1.0)
-            
+
         Returns:
             The text response from the selected LLM
-            
+
         Available models:
         - gpt4o (DEFAULT): OpenAI's GPT-4o - Excellent for reasoning, coding, and creative tasks
         - gemini-2.5-pro: Google's Gemini 2.5 Pro - Great for technical content and structured reasoning

@@ -26,7 +26,7 @@ DEFAULT_MODEL = "gemini-2.5-pro"
 # Mapping of user-friendly model names to litellm model strings
 MODEL_MAPPING: dict[str, str] = {
     # OpenAI model
-    "gpt4o": "openai/chatgpt-4o-latest", # Don't change this to gpt4o
+    "gpt4o": "openai/chatgpt-4o-latest",  # Don't change this to gpt4o
     # Google Gemini model
     "gemini-2.5-pro": "gemini/gemini-2.5-pro-exp-03-25",
     # Anthropic Claude model
@@ -54,7 +54,10 @@ class LLMInput(BaseModel):
         - 'deepseek-v3': DeepSeek-v3-0324 - Specialized large-scale MoE (Mixture-of-Experts) model optimized for code generation and technical problem-solving. Exceptional at programming tasks, algorithm implementation, and debugging. Features fast response times and efficiency. Best for software engineering tasks, coding challenges, and technical implementations.
         """,
     )
-    temperature: float | None = Field(None, description="Temperature for LLM generation (0.0-1.0). Lower values (0.0-0.3) for factual/deterministic responses, higher values (0.7-1.0) for creative/varied responses. Some models like Claude may override this setting when using thinking mode.")
+    temperature: float | None = Field(
+        None,
+        description="Temperature for LLM generation (0.0-1.0). Lower values (0.0-0.3) for factual/deterministic responses, higher values (0.7-1.0) for creative/varied responses. Some models like Claude may override this setting when using thinking mode.",
+    )
 
 
 async def call_llm_core(prompt: str, model_id: str = None, temperature: float = None) -> str:
@@ -95,10 +98,7 @@ async def call_llm_core(prompt: str, model_id: str = None, temperature: float = 
 
         # Use minimal thinking params for Anthropic models in tests
         if litellm_model.startswith("anthropic/"):
-            params["thinking"] = {
-                "type": "enabled",
-                "budget_tokens": 4096 
-            }
+            params["thinking"] = {"type": "enabled", "budget_tokens": 4096}
             params["max_tokens"] = 8192
             # With thinking enabled, temperature must be 1
             params["temperature"] = None
@@ -106,9 +106,9 @@ async def call_llm_core(prompt: str, model_id: str = None, temperature: float = 
         # Make the API call with proper error handling
         # Add drop_params=True to handle incompatible parameters
         response = await acompletion(**params, drop_params=True)
-        
+
         # Check if response has the expected structure
-        if hasattr(response, 'choices') and len(response.choices) > 0:
+        if hasattr(response, "choices") and len(response.choices) > 0:
             return response.choices[0].message.content
         return f"Error: Unexpected response format from {model_id}: {response}"
 
@@ -141,15 +141,15 @@ async def call_llm_core(prompt: str, model_id: str = None, temperature: float = 
 async def llm(ctx: RunContext[ArchitectDependencies], input_data: LLMInput) -> str:
     """
     Execute a prompt against a specialized LLM model to perform targeted reasoning, problem-solving, or creative tasks.
-    
+
     Use this tool when you need to leverage specific model strengths for a particular sub-task. Each model has different
     capabilities that may be more suitable for certain types of queries. For example:
-    
+
     - Use GPT-4o for complex reasoning, creative writing, or general-purpose tasks
     - Use Gemini for up-to-date technical information, explanations, and code understanding
     - Use Claude for nuanced analysis, careful instructions, or processing lengthy context
     - Use DeepSeek for specialized code generation and technical implementation
-    
+
     When to use this tool:
     - When you need specialized expertise beyond your capabilities
     - For complex sub-problems that benefit from targeted reasoning
@@ -163,8 +163,4 @@ async def llm(ctx: RunContext[ArchitectDependencies], input_data: LLMInput) -> s
     Returns:
         The text response from the selected LLM or an error message if the request failed
     """
-    return await call_llm_core(
-        prompt=input_data.prompt,
-        model_id=input_data.model,
-        temperature=input_data.temperature
-    )
+    return await call_llm_core(prompt=input_data.prompt, model_id=input_data.model, temperature=input_data.temperature)
