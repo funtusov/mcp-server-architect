@@ -124,7 +124,7 @@ class AgentExecutor:
 
         return agent
 
-    def run_prd_agent(self, task_description: str, codebase_path: str) -> str:
+    async def run_prd_agent(self, task_description: str, codebase_path: str) -> str:
         """
         Run the agent to generate a PRD using a generic agent pattern.
         The agent will use tools as needed to gather information and generate the PRD.
@@ -167,7 +167,8 @@ class AgentExecutor:
             prompt = prd_prompt.format(task_description=task_description)
 
             # The agent is already instrumented via Agent.instrument_all()
-            result = agent.run_sync(prompt, deps=deps)
+            # Use run() instead of run_sync() to avoid nested event loops
+            result = await agent.run(prompt, deps=deps)
 
             # Extract and return the response
             return result.data
@@ -176,7 +177,7 @@ class AgentExecutor:
             logger.error(f"Error in PRD generation agent: {str(e)}", exc_info=True)
             return f"Error generating PRD: {str(e)}"
 
-    def run_analyze_agent(self, request: str, codebase_path: str) -> str:
+    async def run_analyze_agent(self, request: str, codebase_path: str) -> str:
         """
         Run the agent to analyze code and respond to user queries.
 
@@ -216,7 +217,8 @@ class AgentExecutor:
             prompt = analysis_prompt.format(request=request)
 
             # The agent is already instrumented via Agent.instrument_all()
-            result = agent.run_sync(prompt, deps=deps)
+            # Use run() instead of run_sync() to avoid nested event loops
+            result = await agent.run(prompt, deps=deps)
 
             # Extract and return the response
             return result.data

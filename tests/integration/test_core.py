@@ -53,7 +53,8 @@ def subtract(a, b):
     before_record_response=scrub_api_keys,
     record_mode="new_episodes",
 )
-def test_generate_prd():
+@pytest.mark.asyncio
+async def test_generate_prd():
     """Test the generate_prd function."""
     # Initialize the Architect
     architect = Architect()
@@ -61,8 +62,8 @@ def test_generate_prd():
     # Define test parameters
     task_description = "Create a simple calculator app with basic operations"
 
-    # Call the function we want to test
-    result = architect.generate_prd(task_description, TEST_CODEBASE_PATH)
+    # Call the function we want to test - now with await
+    result = await architect.generate_prd(task_description, TEST_CODEBASE_PATH)
 
     # Assertions - check for expected patterns in the response, not exact matches
     assert result is not None
@@ -77,7 +78,8 @@ def test_generate_prd():
     before_record_response=scrub_api_keys,
     record_mode="new_episodes",
 )
-def test_think():
+@pytest.mark.asyncio
+async def test_think():
     """Test the think function."""
     # Initialize the Architect
     architect = Architect()
@@ -85,8 +87,8 @@ def test_think():
     # Define test request
     request = "How should I implement error handling in my calculator app?"
 
-    # Call the function
-    result = architect.think(request)
+    # Call the function - now with await
+    result = await architect.think(request)
 
     # Assertions
     assert result is not None

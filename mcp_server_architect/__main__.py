@@ -119,7 +119,7 @@ def main():
     architect = Architect()
 
     @server.tool()
-    def generate_prd(task_description: str, codebase_path: str) -> str:
+    async def generate_prd(task_description: str, codebase_path: str) -> str:
         """
         Generate a PRD or high-level design document based on codebase analysis and task description.
 
@@ -130,10 +130,10 @@ def main():
         Returns:
             str: The generated PRD or design document
         """
-        return architect.generate_prd(task_description, codebase_path)
+        return await architect.generate_prd(task_description, codebase_path)
 
     @server.tool()
-    def think(request: str, codebase_path: str = "") -> str:
+    async def think(request: str, codebase_path: str = "") -> str:
         """
         Provide deep reasoning assistance for a project-related question or issue.
 
@@ -144,7 +144,7 @@ def main():
         Returns:
             str: Reasoning guidance and potential solutions
         """
-        return architect.think(request, codebase_path)
+        return await architect.think(request, codebase_path)
 
     @server.tool()
     async def llm(prompt: str, model: str = None, temperature: float = None) -> str:

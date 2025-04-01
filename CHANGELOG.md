@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-04-01
+
+### Fixed
+- Fixed "This event loop is already running" error by converting synchronous agent methods to async
+- Made all agent-related methods in `AgentExecutor`, `Architect`, and FastMCP tools properly async
+- Added proper async/await patterns to prevent nested event loops
+- Fixed integration test for async event loop handling
+
 ## [0.2.0] - 2025-03-28
 
 ### Added

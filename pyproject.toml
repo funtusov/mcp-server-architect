@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mcp-server-architect"
-version = "0.2.0"
+version = "0.2.1"
 description = "AI Software Architect MCP Server that generates PRDs and provides reasoning assistance"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -56,3 +56,19 @@ def test_all_tools_initialization():
 
     # Log success
     logger.info("Successfully created agent with all tools")
+
+
+@pytest.mark.skipif(not os.getenv("OPENAI_API_KEY"), reason="OPENAI_API_KEY not set")
+@pytest.mark.asyncio
+async def test_nested_event_loop():
+    """Test that our fix for the nested event loop issue works."""
+    # Create the agent executor
+    executor = AgentExecutor()
+
+    # This would previously fail with "This event loop is already running" error
+    # Now it should work because we're using async/await properly
+    result = await executor.run_analyze_agent("Test request", "")
+
+    # Verify we got a result that's not an error about event loops
+    assert result is not None
+    assert "This event loop is already running" not in result
