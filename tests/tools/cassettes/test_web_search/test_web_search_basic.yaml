@@ -14,16 +14,25 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - exa-py 1.9.1
+      - exa-py 1.10.0
     method: POST
     uri: https://api.exa.ai/search
   response:
     body:
-      string: "{\"requestId\":\"9615a1cbd8647daaf8182b6c29a0f613\",\"autopromptString\":\"What
+      string: "{\"requestId\":\"1a9585b21d3a2cf9ce687b938d5d9abc\",\"autopromptString\":\"What
         is the Model Context Protocol\",\"resolvedSearchType\":\"keyword\",\"results\":[{\"id\":\"https://www.anthropic.com/news/model-context-protocol\",\"title\":\"Introducing
         the Model Context Protocol - Anthropic\",\"url\":\"https://www.anthropic.com/news/model-context-protocol\",\"publishedDate\":\"2024-11-25T12:00:00.000Z\",\"author\":\"\",\"text\":\"Application
         error: a client-side exception has occurred (see the browser console for more
-        information).\"},{\"id\":\"https://modelcontextprotocol.io/introduction\",\"title\":\"Model
+        information).\"},{\"id\":\"https://docs.anthropic.com/en/docs/agents-and-tools/mcp\",\"title\":\"Model
+        Context Protocol (MCP) - Anthropic API\",\"url\":\"https://docs.anthropic.com/en/docs/agents-and-tools/mcp\",\"publishedDate\":\"2025-01-01T00:00:00.000Z\",\"author\":\"\",\"text\":\"MCP
+        is an open protocol that standardizes how applications provide context to
+        LLMs. Think of MCP like a USB-C port for AI applications. Just as USB-C provides
+        a standardized way to connect your devices to various peripherals and accessories,
+        MCP provides a standardized way to connect AI models to different data sources
+        and tools. \\n MCP Documentation Learn more about the protocol, how to build
+        servers and clients, and discover those made by others. \\n MCP in Claude
+        Desktop Learn how to set up MCP in Claude for Desktop, such as letting Claude
+        read and write files to your computer\u2019s file system.\",\"favicon\":\"https://mintlify.s3-us-west-1.amazonaws.com/anthropic/_generated/favicon/favicon-32x32.png?v=3\"},{\"id\":\"https://modelcontextprotocol.io/introduction\",\"title\":\"Model
         Context Protocol: Introduction\",\"url\":\"https://modelcontextprotocol.io/introduction\",\"publishedDate\":\"2023-12-21T01:33:54.000Z\",\"author\":\"\",\"text\":\"MCP
         is an open protocol that standardizes how applications provide context to
         LLMs. Think of MCP like a USB-C port for AI applications. Just as USB-C provides
@@ -57,19 +66,11 @@ interactions:
         about the MCP specification, use the specification discussions \\n For discussions
         or Q&amp;A about other MCP open source components, use the organization discussions
         \\n For bug reports, feature requests, and questions related to Claude.app
-        and claude.ai\u2019s MCP integration, please email [email protected]\",\"image\":\"https://mcp.mintlify.app/_next/image?url=%2Fapi%2Fog%3Fdivision%3DDocumentation%26title%3DIntroduction%26description%3DGet%2Bstarted%2Bwith%2Bthe%2BModel%2BContext%2BProtocol%2B%2528MCP%2529%26logoLight%3Dhttps%253A%252F%252Fmintlify.s3.us-west-1.amazonaws.com%252Fmcp%252Flogo%252Flight.svg%26logoDark%3Dhttps%253A%252F%252Fmintlify.s3.us-west-1.amazonaws.com%252Fmcp%252Flogo%252Fdark.svg%26primaryColor%3D%252309090b%26lightColor%3D%2523FAFAFA%26darkColor%3D%252309090b&w=1200&q=100\",\"favicon\":\"https://mintlify.s3-us-west-1.amazonaws.com/mcp/_generated/favicon/favicon-32x32.png?v=3\"},{\"id\":\"https://docs.anthropic.com/en/docs/agents-and-tools/mcp\",\"title\":\"Model
-        Context Protocol (MCP) - Anthropic API\",\"url\":\"https://docs.anthropic.com/en/docs/agents-and-tools/mcp\",\"author\":\"\",\"text\":\"MCP
-        is an open protocol that standardizes how applications provide context to
-        LLMs. Think of MCP like a USB-C port for AI applications. Just as USB-C provides
-        a standardized way to connect your devices to various peripherals and accessories,
-        MCP provides a standardized way to connect AI models to different data sources
-        and tools. \\n MCP Documentation Learn more about the protocol, how to build
-        servers and clients, and discover those made by others. \\n MCP in Claude
-        Desktop Learn how to set up MCP in Claude for Desktop, such as letting Claude
-        read and write files to your computer\u2019s file system.\",\"favicon\":\"https://mintlify.s3-us-west-1.amazonaws.com/anthropic/_generated/favicon/favicon-32x32.png?v=3\"}],\"costDollars\":{\"total\":0.008,\"search\":{\"neural\":0.005},\"contents\":{\"text\":0.003}}}"
+        and claude.ai\u2019s MCP integration, please see Anthropic\u2019s guide on
+        How to Get Support\",\"image\":\"https://mcp.mintlify.app/_next/image?url=%2Fapi%2Fog%3Fdivision%3DDocumentation%26title%3DIntroduction%26description%3DGet%2Bstarted%2Bwith%2Bthe%2BModel%2BContext%2BProtocol%2B%2528MCP%2529%26logoLight%3Dhttps%253A%252F%252Fmintlify.s3.us-west-1.amazonaws.com%252Fmcp%252Flogo%252Flight.svg%26logoDark%3Dhttps%253A%252F%252Fmintlify.s3.us-west-1.amazonaws.com%252Fmcp%252Flogo%252Fdark.svg%26primaryColor%3D%252309090b%26lightColor%3D%2523FAFAFA%26darkColor%3D%252309090b&w=1200&q=100\",\"favicon\":\"https://mintlify.s3-us-west-1.amazonaws.com/mcp/_generated/favicon/favicon-32x32.png?v=3\"}],\"costDollars\":{\"total\":0.008,\"search\":{\"neural\":0.005},\"contents\":{\"text\":0.003}}}"
     headers:
       CF-RAY:
-      - 9280affc88d1034d-MAD
+      - 9296e58dff5237d3-MAD
       Connection:
       - keep-alive
       Content-Encoding:
@@ -77,11 +78,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 29 Mar 2025 16:19:13 GMT
+      - Tue, 01 Apr 2025 09:00:33 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=1KVWpaSTodFjGKGawR6wBG4wiA5SYP%2FqrxEM672wOIokVxw9d1YzTPZlYFnCf3TmAssLX3hd3mJ1918UeszuFlRbVeSDnSHRC0kUm4TamwLpZoEXgoR%2FFa8I6dE%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=DTLTy1Nne5IhqHNfTD2Ujm6N2U8lVrLphwZrX1vcixG4IosQWqu9x4zzKet6%2FA53QnETwvIavVak3udRlCf6cW7wICHDoFnoRDCc%2Ff1OboJ%2B%2BjKbxI6WD2v2Fnw%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -91,9 +92,9 @@ interactions:
       cf-cache-status:
       - DYNAMIC
       etag:
-      - W/"12cc-Nn4aRJddREW/xtdxr11K0RkwvlU"
+      - W/"130d-UD7DHCJSUrToez9fpXaGdEPa8C0"
       server-timing:
-      - cfL4;desc="?proto=TCP&rtt=15047&min_rtt=14966&rtt_var=5775&sent=5&recv=7&lost=0&retrans=0&sent_bytes=2824&recv_bytes=996&delivery_rate=185415&cwnd=215&unsent_bytes=0&cid=1141ec0801a0ef6e&ts=1871&x=0"
+      - cfL4;desc="?proto=TCP&rtt=30538&min_rtt=19493&rtt_var=15199&sent=5&recv=7&lost=0&retrans=0&sent_bytes=2825&recv_bytes=997&delivery_rate=147745&cwnd=248&unsent_bytes=0&cid=c0c0a9fa62b7589b&ts=1387&x=0"
       strict-transport-security:
       - max-age=31536000; includeSubDomains
       vary:
@@ -103,9 +104,9 @@ interactions:
       x-ratelimit-limit:
       - '200'
       x-ratelimit-remaining:
-      - '198'
+      - '195'
       x-ratelimit-reset:
-      - '1743265153'
+      - '1743498034'
     status:
       code: 200
       message: OK

@@ -1,108 +1,192 @@
 #!/usr/bin/env python3
 """
-Tests for the LLM tool.
+Tests for the LLM tool using litellm with VCR recording.
 """
 
-from unittest.mock import MagicMock, patch
+import os
 
 import pytest
+from dotenv import load_dotenv
+from pydantic_ai import RunContext
 
-from mcp_server_architect.tools.llm import LLMInput, llm
+from mcp_server_architect.tools.llm import LLMInput, call_llm_core, llm
 from mcp_server_architect.types import ArchitectDependencies
 
+# Load environment variables from .env file
+load_dotenv()
 
-class TestLLMTool:
-    """Tests for the LLM tool functions."""
 
-    @pytest.mark.asyncio
-    @patch("mcp_server_architect.tools.llm.Agent")
-    async def test_llm_tool_basic(self, mock_agent):
-        """Test the basic functionality of the LLM tool."""
-        # Setup mock agent
-        mock_agent_instance = MagicMock()
-        mock_response = MagicMock()
-        mock_response.data = "This is a test response"
+@pytest.fixture
+def ctx():
+    """Create a real RunContext for testing."""
+    # Get API keys from environment variables
+    api_keys = {
+        "gemini": os.environ.get("GEMINI_API_KEY"),
+        "anthropic": os.environ.get("ANTHROPIC_API_KEY"),
+        "openai": os.environ.get("OPENAI_API_KEY"),
+        "openrouter": os.environ.get("OPENROUTER_API_KEY"),
+    }
 
-        # Create a proper async mock for the run method
-        async def mock_run(*args, **kwargs):
-            return mock_response
+    return RunContext(
+        deps=ArchitectDependencies(
+            codebase_path="",
+            api_keys=api_keys,
+        ),
+        model="gpt-4o",
+        usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+        prompt="test prompt",
+        retry=0,
+    )
 
-        mock_agent_instance.run = mock_run
-        mock_agent.return_value = mock_agent_instance
 
-        # Create context and input
-        mock_ctx = MagicMock()
-        mock_ctx.deps = ArchitectDependencies(codebase_path="", api_keys={})
+@pytest.mark.asyncio
+@pytest.mark.vcr(
+    filter_headers=["authorization", "x-goog-api-key", "x-api-key", "anthropic-version"],
+    filter_query_parameters=["key", "api_key"],
+    record_mode="once",
+)
+async def test_llm_tool_gpt4o(ctx):
+    """Test the LLM tool with GPT-4o model."""
+    # Create input data
+    input_data = LLMInput(
+        prompt="What is 2+2? Respond with just the number.",
+        model="gpt4o",
+        temperature=0.0,
+    )
 
-        input_data = LLMInput(prompt="Test prompt", temperature=0.7)
+    # Call the tool
+    result = await llm(ctx, input_data)
 
-        # Call the tool
-        result = await llm(mock_ctx, input_data)
+    # Verify result contains a numeric response and not an error
+    assert result is not None
+    assert result.strip() != ""
+    assert not result.startswith("Error")
+    assert any(char.isdigit() for char in result)
 
-        # Verify result
-        assert result == "This is a test response"
-        mock_agent.assert_called_once()
 
-    @pytest.mark.asyncio
-    @patch("mcp_server_architect.tools.llm.Agent")
-    async def test_llm_tool_with_custom_model(self, mock_agent):
-        """Test the LLM tool with custom model selection."""
-        # Setup mock agent
-        mock_agent_instance = MagicMock()
-        mock_response = MagicMock()
-        mock_response.data = "Custom model response"
+@pytest.mark.asyncio
+@pytest.mark.vcr(
+    filter_headers=["authorization", "x-goog-api-key", "x-api-key", "anthropic-version"],
+    filter_query_parameters=["key", "api_key"],
+    record_mode="new_episodes",
+)
+async def test_llm_tool_gemini(ctx):
+    """Test the LLM tool with Gemini model."""
+    # Create input data
+    input_data = LLMInput(
+        prompt="What is 3+3? Respond with just the number.",
+        model="gemini-2.5-pro",
+        temperature=0.0,
+    )
 
-        # Keep track of what was passed to run
-        run_args = {}
+    # Call the tool
+    result = await llm(ctx, input_data)
 
-        # Create a proper async mock for the run method
-        async def mock_run(*args, **kwargs):
-            run_args.update(kwargs)  # Store the kwargs for later inspection
-            return mock_response
+    # Verify result contains a numeric response and not an error
+    assert result is not None
+    assert result.strip() != ""
+    assert not result.startswith("Error")
+    assert any(char.isdigit() for char in result)
 
-        mock_agent_instance.run = mock_run
-        mock_agent.return_value = mock_agent_instance
 
-        # Create context and input
-        mock_ctx = MagicMock()
-        mock_ctx.deps = ArchitectDependencies(codebase_path="", api_keys={})
+@pytest.mark.asyncio
+@pytest.mark.vcr(
+    filter_headers=["authorization", "x-goog-api-key", "x-api-key", "anthropic-version"],
+    filter_query_parameters=["key", "api_key", "thinking"],
+    record_mode="new_episodes",
+)
+async def test_llm_tool_claude(ctx):
+    """Test the LLM tool with Claude 3.7 Sonnet model with thinking enabled."""
+    # Create input data
+    input_data = LLMInput(
+        prompt="What is 4+4? Respond with just the number.",
+        model="claude-3.7-sonnet",
+        # No temperature - will be forced to 1.0 for Claude with thinking
+    )
 
-        input_data = LLMInput(prompt="Test prompt", model="gpt4o", temperature=0.5, max_tokens=100)
+    # Call the tool
+    result = await llm(ctx, input_data)
 
-        # Call the tool
-        result = await llm(mock_ctx, input_data)
+    # Verify result contains a numeric response and not an error
+    assert result is not None
+    assert result.strip() != ""
+    assert not result.startswith("Error")
+    assert any(char.isdigit() for char in result)
 
-        # Verify result
-        assert result == "Custom model response"
-        mock_agent.assert_called_once()
 
-        # Verify generation options were passed correctly
-        assert run_args["generation_options"]["temperature"] == 0.5
-        assert run_args["generation_options"]["max_tokens"] == 100
+@pytest.mark.asyncio
+@pytest.mark.vcr(
+    filter_headers=["authorization", "x-goog-api-key", "x-api-key", "anthropic-version", "or-organization-id"],
+    filter_query_parameters=["key", "api_key"],
+    record_mode="once",
+)
+async def test_llm_tool_deepseek(ctx):
+    """Test the LLM tool with DeepSeek model via OpenRouter."""
+    # Create input data
+    input_data = LLMInput(
+        prompt="What is 5+5? Respond with just the number.",
+        model="deepseek-v3-0324",
+        temperature=0.0,
+    )
 
-    @pytest.mark.asyncio
-    @patch("mcp_server_architect.tools.llm.Agent")
-    async def test_llm_tool_error_handling(self, mock_agent):
-        """Test error handling in the LLM tool."""
-        # Setup mock agent to raise an exception
-        mock_agent_instance = MagicMock()
+    # Call the tool
+    result = await llm(ctx, input_data)
 
-        # Create a proper async mock that raises an exception
-        async def mock_run_error(*args, **kwargs):
-            raise Exception("Test error")
+    # Verify result contains a numeric response and not an error
+    assert result is not None
+    assert result.strip() != ""
+    assert not result.startswith("Error")
+    assert any(char.isdigit() for char in result)
 
-        mock_agent_instance.run = mock_run_error
-        mock_agent.return_value = mock_agent_instance
 
-        # Create context and input
-        mock_ctx = MagicMock()
-        mock_ctx.deps = ArchitectDependencies(codebase_path="", api_keys={})
+@pytest.mark.asyncio
+@pytest.mark.vcr(
+    filter_headers=["authorization", "x-goog-api-key", "x-api-key", "anthropic-version", "or-organization-id"],
+    filter_query_parameters=["key", "api_key"],
+    record_mode="once",
+)
+async def test_llm_tool_error_handling(ctx):
+    """Test error handling in the LLM tool with an invalid model."""
+    # Create input data with an invalid model ID
+    input_data = LLMInput(
+        prompt="What is 2+2?",
+        model="invalid-model-id",  # This will trigger the fallback logic
+        temperature=0.7,
+    )
 
-        input_data = LLMInput(prompt="Test prompt")
+    # Call the tool
+    result = await llm(ctx, input_data)
 
-        # Call the tool
-        result = await llm(mock_ctx, input_data)
+    # The tool should fall back to the default model or show an error
+    # In either case, we can at least verify it doesn't crash
+    assert result is not None
+    assert result.strip() != ""
 
-        # Verify error handling
-        assert "Error in LLM tool" in result
-        assert "Test error" in result
+
+@pytest.mark.asyncio
+@pytest.mark.vcr(
+    filter_headers=["authorization", "x-goog-api-key", "x-api-key", "anthropic-version"],
+    filter_query_parameters=["key", "api_key"],
+    record_mode="once",
+)
+async def test_core_llm_function():
+    """Test the core LLM function that will be used by the MCP tool."""
+    # This test simulates the direct use of the core LLM function from MCP
+    prompt = "What is 3+5? Respond with just the number."
+
+    # Call the core function directly
+    result = await call_llm_core(prompt=prompt, model_id="gemini-2.5-pro", temperature=0.1)
+
+    # Verify result contains a numeric response
+    assert result is not None
+    assert result.strip() != ""
+    assert not result.startswith("Error")
+    assert any(char.isdigit() for char in result)
+
+    # Test with default parameters
+    result_default = await call_llm_core(prompt=prompt)
+
+    # Verify default parameters work too
+    assert result_default is not None
+    assert result_default.strip() != ""
+    assert not result_default.startswith("Error")

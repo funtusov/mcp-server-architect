@@ -44,11 +44,19 @@ def filter_api_keys(response):
     return response
 
 
-# Configure VCR for pytest-recording
+# Configure VCR for pytest-recording with support for all LLM providers
 pytest.recording_vcr_kwargs = {
     "filter_headers": [
+        # OpenAI
         ("authorization", "[FILTERED]"),
+        # Google
         ("x-goog-api-key", "[FILTERED]"),
+        # Anthropic
+        ("x-api-key", "[FILTERED]"),
+        ("anthropic-version", "[FILTERED]"),
+        # OpenRouter
+        ("or-organization-id", "[FILTERED]"),
+        ("http-openrouter-api-key", "[FILTERED]"),
     ],
     "decode_compressed_response": True,
     "filter_query_parameters": [
@@ -60,3 +68,5 @@ pytest.recording_vcr_kwargs = {
     "path_transformer": lambda path: os.path.join(os.path.dirname(__file__), "cassettes", os.path.basename(path)),
     "match_on": ["method", "scheme", "host", "port", "path", "query"],
 }
+
+

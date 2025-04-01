@@ -22,10 +22,10 @@ This document outlines the complete process for building, testing, and publishin
    ruff format .
    ```
 
-3. **Run Build Verification Test**
+3. **Run Tests**
    ```bash
-   # This runs a comprehensive test with the API key
-   ./test_build.sh
+   # Run all tests
+   uv run pytest tests/ -v
    ```
 
 4. **Commit Changes**
@@ -96,7 +96,7 @@ If you encounter issues during the publish process:
 1. **Build Failures**
    - Check version numbers are consistent
    - Verify dependencies in pyproject.toml
-   - Run ./test_build.sh to detect issues
+   - Run tests to detect issues
 
 2. **PyPI Upload Failures**
    - Verify you have the correct token set

@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Code reader tool for analyzing source code files
 - Updated LLM tool for generating content using Gemini models
 - Support for agent loop with multiple steps before returning a response
+- Multi-model support with LiteLLM for provider-agnostic API calls
+- Direct LLM tool exposed via MCP for model access
 
 ### Changed
 - Refactored `Architect` class to use AgentExecutor for running agent loops

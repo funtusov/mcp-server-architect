@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: '{"contents":[{"role":"user","parts":[{"text":"What is 2+2?"}]}],"generationConfig":{"temperature":0.7}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '103'
+      content-type:
+      - application/json
+      host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - litellm/1.65.1
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAC/22QQUvEMBCF7/kVYa5ulrW6IoKn1aMoWkSQPQQ77gbTpDSzUCn9705a082iOSRh
+        3stM3tcLKeFDu8pUmjDAjXznipT9uEfNO0JHLKQSFxvd0tE7rT67s4Wwi4+gkGeykLfycgmZYZjv
+        28Wxbestxje1r9Am+5AM8GmcCftn1MG7aHspH59gVo2rsOPySqQBY2s4BL3DByTNAfUcA5rW1w2V
+        /gvdxh/GgNdTrwzHvzJ50vZEOb9a/Gka7niksTmlDCAn1NbQd4xR3r+VkFGgk6GJwnhuxS+PCdEr
+        tsFMLHZYMx1VLNeKP6Gwa9TqQhVrEIP4AYIMPKvkAQAA
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 01 Apr 2025 10:01:32 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=1395
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

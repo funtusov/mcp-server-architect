@@ -9,7 +9,7 @@ import os
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Model dictionary mapping friendly names to PydanticAI model strings
+# Legacy model dictionary for backward compatibility with pydantic-ai agents
 MODEL_CONFIGS = {
     # Gemini models
     "gemini-2.5": "google-gla:gemini-2.5-pro-exp-03-25",

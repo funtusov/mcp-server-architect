@@ -14,15 +14,15 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - exa-py 1.9.1
+      - exa-py 1.10.0
     method: POST
     uri: https://api.exa.ai/search
   response:
     body:
-      string: "{\"requestId\":\"a058680f65d559a20d9b4f9013ee78f7\",\"autopromptString\":\"PydanticAI
+      string: "{\"requestId\":\"02aa691b804266b81c383d3dd58e5e93\",\"autopromptString\":\"PydanticAI
         agent pattern implementation example\",\"resolvedSearchType\":\"neural\",\"results\":[{\"id\":\"https://medium.com/@kbdhunga/an-ai-search-agent-built-with-pydanticai-and-langgraph-frameworks-eea929dc665e\",\"title\":\"An
         AI Search Agent Built with PydanticAI and LangGraph Frameworks\",\"url\":\"https://medium.com/@kbdhunga/an-ai-search-agent-built-with-pydanticai-and-langgraph-frameworks-eea929dc665e\",\"publishedDate\":\"2025-01-27T04:11:37.000Z\",\"author\":\"Kamal
-        Dhungana\",\"score\":0.351384699344635,\"text\":\"An AI agent is an autonomous
+        Dhungana\",\"score\":0.34540635347366333,\"text\":\"An AI agent is an autonomous
         software program designed to perceive its environment, make decisions, and
         perform tasks to achieve specific goals without human intervention. These
         agents can interact with users, other systems, or their surroundings, adapting
@@ -41,7 +41,7 @@ interactions:
         AI applications, whereas LangGraph provides a robust framework for constructing
         complex, stateful agent workflows with large\u2026\",\"image\":\"https://miro.medium.com/v2/da:true/resize:fit:1200/0*y8BPx7D6XZYRLyrX\",\"favicon\":\"https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19\"},{\"id\":\"https://github.com/intellectronica/building-effective-agents-with-pydantic-ai\",\"title\":\"GitHub
         - intellectronica/building-effective-agents-with-pydantic-ai: Code examples
-        for Building Effective Agents ported and adapted to use Pydantic AI\",\"url\":\"https://github.com/intellectronica/building-effective-agents-with-pydantic-ai\",\"publishedDate\":\"2024-12-20T22:06:59.000Z\",\"author\":\"intellectronica\",\"score\":0.3452526330947876,\"text\":\"Building
+        for Building Effective Agents ported and adapted to use Pydantic AI\",\"url\":\"https://github.com/intellectronica/building-effective-agents-with-pydantic-ai\",\"publishedDate\":\"2024-12-20T22:06:59.000Z\",\"author\":\"intellectronica\",\"score\":0.3425450623035431,\"text\":\"Building
         Effective Agents with Pydantic AI \\n Code examples for the agentic AI patterns
         discussed in the excellent article\\n Building Effective Agents \\nby Erik
         Schluntz and Barry Zhang \\nof Anthropic, inspired, ported and adapted from
@@ -66,7 +66,7 @@ interactions:
         calls\\nwith Pydantic Logfire .\",\"image\":\"https://opengraph.githubassets.com/021cd8aaa6a79ea54786e7c51595712a8d03d1a512962e0f555a0faeebaf4c5b/intellectronica/building-effective-agents-with-pydantic-ai\",\"favicon\":\"https://github.com/fluidicon.png\"}],\"costDollars\":{\"total\":0.007,\"search\":{\"neural\":0.005},\"contents\":{\"text\":0.002}}}"
     headers:
       CF-RAY:
-      - 9280b008db940345-MAD
+      - 9296e5970e860268-MAD
       Connection:
       - keep-alive
       Content-Encoding:
@@ -74,11 +74,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 29 Mar 2025 16:19:15 GMT
+      - Tue, 01 Apr 2025 09:00:35 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=s7NKHXUYiF71dVyncLwN9wpEBNuIFw3aHZoursKwf%2Fi56L63epjVYljy2cF%2F3C81VMTcBzz9He%2Fazt5mQi2HMnVRLlRK%2Fa0wJzDNIZcm5EhiQpV99k16O3VAYQU%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=xBioe378pVzrvVOl73inz%2Ft44AvJqvOvFOYWK%2FeVEqpiwrmAQ2b0dXsWmhS2Jr3SlCctVM2Xn45FQz2CkpQPFmDaUKVpVro9kpsIE7Y0a%2BAjj%2FW5XK83EFm4X4s%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -88,9 +88,9 @@ interactions:
       cf-cache-status:
       - DYNAMIC
       etag:
-      - W/"1129-d0L9atOvoHIYti0Jjt9XwXzYkNk"
+      - W/"112b-DN5usKvoFrBQpudje7p5dDKEKlk"
       server-timing:
-      - cfL4;desc="?proto=TCP&rtt=14844&min_rtt=13528&rtt_var=6013&sent=4&recv=7&lost=0&retrans=0&sent_bytes=2823&recv_bytes=1009&delivery_rate=214074&cwnd=235&unsent_bytes=0&cid=3d95dd1a3eac81df&ts=1944&x=0"
+      - cfL4;desc="?proto=TCP&rtt=14071&min_rtt=13555&rtt_var=5452&sent=5&recv=7&lost=0&retrans=0&sent_bytes=2824&recv_bytes=1010&delivery_rate=212467&cwnd=251&unsent_bytes=0&cid=b93bf5d56914b70e&ts=1610&x=0"
       strict-transport-security:
       - max-age=31536000; includeSubDomains
       vary:
@@ -100,9 +100,9 @@ interactions:
       x-ratelimit-limit:
       - '200'
       x-ratelimit-remaining:
-      - '183'
+      - '196'
       x-ratelimit-reset:
-      - '1743265155'
+      - '1743498035'
     status:
       code: 200
       message: OK

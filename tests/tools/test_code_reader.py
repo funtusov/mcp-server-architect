@@ -4,10 +4,10 @@ Tests for the code_reader tool.
 """
 
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
-from pydantic_ai import ModelRetry
+from pydantic_ai import ModelRetry, RunContext
 
 from mcp_server_architect.tools.code_reader import (
     CodeReaderInput,
@@ -20,6 +20,7 @@ from mcp_server_architect.tools.code_reader import (
     safe_read_file,
     should_include_file,
 )
+from mcp_server_architect.types import ArchitectDependencies
 
 
 class TestCodeReader:
@@ -29,6 +30,20 @@ class TestCodeReader:
     def test_data_path(self):
         """Return the path to the test data directory."""
         return os.path.join(os.path.dirname(os.path.dirname(__file__)), "test_data", "code_reader")
+    
+    @pytest.fixture
+    def ctx(self, test_data_path):
+        """Create a real RunContext for testing."""
+        return RunContext(
+            deps=ArchitectDependencies(
+                codebase_path=test_data_path,
+                api_keys={},
+            ),
+            model="gpt-4o",
+            usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+            prompt="test prompt",
+            retry=0
+        )
 
     def test_is_within_codebase(self):
         """Test the is_within_codebase function."""
@@ -144,17 +159,13 @@ class TestCodeReader:
         assert "No files were found" in context
 
     @pytest.mark.asyncio
-    async def test_code_reader_tool(self, test_data_path):
+    async def test_code_reader_tool(self, test_data_path, ctx):
         """Test the code_reader tool function."""
-        # Create mock context
-        mock_ctx = MagicMock()
-        mock_ctx.deps.codebase_path = test_data_path
-
         # Create input data
         input_data = CodeReaderInput(paths=[test_data_path], filter_extensions=[".py"])
 
         # Call the tool
-        result = await code_reader(mock_ctx, input_data)
+        result = await code_reader(ctx, input_data)
 
         # Verify result
         assert "# Code Context" in result
@@ -163,28 +174,30 @@ class TestCodeReader:
         assert "Test file 2" in result
 
         # Test with no codebase path
-        mock_ctx.deps.codebase_path = ""
-        result = await code_reader(mock_ctx, input_data)
+        empty_ctx = RunContext(
+            deps=ArchitectDependencies(codebase_path="", api_keys={}),
+            model="gpt-4o",
+            usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+            prompt="test prompt",
+            retry=0
+        )
+        result = await code_reader(empty_ctx, input_data)
         assert "Error: No codebase path provided" in result
 
         # Test with specific files
-        mock_ctx.deps.codebase_path = test_data_path
         input_data = CodeReaderInput(paths=["file1.py"], max_files=1)
-        result = await code_reader(mock_ctx, input_data)
+        result = await code_reader(ctx, input_data)
         assert "Test file 1" in result
         assert "function1" in result
 
     @pytest.mark.asyncio
-    async def test_code_reader_error_handling(self, test_data_path):
+    async def test_code_reader_error_handling(self, test_data_path, ctx):
         """Test error handling in the code_reader tool."""
-        # Create mock context
-        mock_ctx = MagicMock()
-        mock_ctx.deps.codebase_path = test_data_path
 
         # Test with non-existent path
         with pytest.raises(ModelRetry) as excinfo:
             input_data = CodeReaderInput(paths=["nonexistent.py"])
-            await code_reader(mock_ctx, input_data)
+            await code_reader(ctx, input_data)
         assert "Path not found" in str(excinfo.value)
 
         # Test with exception in collect_files
@@ -192,7 +205,7 @@ class TestCodeReader:
             mock_collect.side_effect = Exception("Test exception")
 
             input_data = CodeReaderInput(paths=["file1.py"])
-            result = await code_reader(mock_ctx, input_data)
+            result = await code_reader(ctx, input_data)
             assert "Error in code reader tool" in result
             assert "Test exception" in result
 

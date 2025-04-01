@@ -34,3 +34,6 @@ build/
 
 # Temporary files and test directories
 tmp/
+
+# macOS specific files
+.DS_Store

@@ -1,0 +1,114 @@
+interactions:
+- request:
+    body: '{"contents":[{"role":"user","parts":[{"text":"What is 3+5? Respond with
+      just the number."}]}],"generationConfig":{"temperature":0.1}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '133'
+      content-type:
+      - application/json
+      host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - litellm/1.65.1
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAC/2WQQUvEMBCF7/kVYc4bWdctyF7VoyhaRJA9hO24BtOkNLPQpfS/O2k33RRzSMJ7
+        L5OZrxdSwkG7ylSaMMBOfrEiZT/u0fOO0BEbSWKx0S1ds9PqsztHCLv4CO4h04f5vl9dq7XeYozW
+        vkKb4kMKwLdxJvy8oQ7exdh7+fIKs2tchR3La5E+GEvDKegjPiNpnkvP3UPT+rqh0v+ie/Cnca7b
+        7VQsw7D0LzZ50nbpFKt/VcMj/2lsTicDxyNqa+gc5yifPkvIMNCyqcRhPPfiQmSC9IFtMBONI9bM
+        R21uCsVdKOwatb5TmwLEIP4A5a943d0BAAA=
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 01 Apr 2025 09:29:33 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=1436
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"contents":[{"role":"user","parts":[{"text":"What is 3+5? Respond with
+      just the number."}]}],"generationConfig":{}}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '116'
+      content-type:
+      - application/json
+      host:
+      - generativelanguage.googleapis.com
+      user-agent:
+      - litellm/1.65.1
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAC/2WQQUvEMBCF7/kVYc4bWdctyF7VoyhaRJA9hO24BtOkNLPQpfS/O2k33RRzSMJ7
+        L5OZrxdSwkG7ylSaMMBOfrEiZT/u0fOO0BEbSWKx0S1ds9PqsztHCLv4CO4h04f5vl9dq7XeYozW
+        vkKb4kMKwLdxJvy8oQ7exdh7+fIKs2tchR3La5E+GEvDKegjPiNpnkvP3UPT+rqh0v+ie/Cnca7b
+        7VQsw7D0LzZ50nbpFKt/VcMj/2lsTicDxyNqa+gc5yifPkvIMNCyqcRhPPfiQmSC9IFtMBONI9bM
+        R21uCsVdKOwatb5TmwLEIP4A5a943d0BAAA=
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 01 Apr 2025 09:29:34 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=1297
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

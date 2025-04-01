@@ -1,0 +1,106 @@
+interactions:
+- request:
+    body: '{"messages":[{"role":"user","content":"What is 2+2? Respond with just the
+      number."}],"model":"chatgpt-4o-latest","temperature":0.0}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      connection:
+      - keep-alive
+      content-length:
+      - '131'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - AsyncOpenAI/Python 1.70.0
+      x-stainless-arch:
+      - arm64
+      x-stainless-async:
+      - async:asyncio
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - MacOS
+      x-stainless-package-version:
+      - 1.70.0
+      x-stainless-raw-response:
+      - 'true'
+      x-stainless-read-timeout:
+      - '600.0'
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.11.11
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//jFLLbtswELzrKwie7cKO1dTw0acg16At0CIQ1uRKZkJxCe5KbRD43wvK
+        siX3AfSiw8zOcGa174VS2lm9U9ocQUwb/XL/8OS4/9K/7S18BuOk/rGh/vHl29e+SXqRFXR4QSMX
+        1QdDbfQojsKZNglBMLuuP5Wbj6v1/fZ+IFqy6C+yJsqypKUHQZZReCRnkPVOfS+UUup9+OaIweJP
+        vVOrxQVpkRka1LvrkFI6kc+IBmbHAuFsO5KGgmAYUpdzPGHdMeRYofN+RkAIJJBrDYmeR+Z0zeCp
+        iYkO/JtU1y44PlYJgSnk91go6oE9FUo9D127m/g6JmqjVEKvODx3N1bV03Jn5MgJCfgZfMFvzCqL
+        As7zbFXagDminZTTXqGzjmZEMav8Z5a/eZ9ru9D8j/1EGINR0FYxoXXmtu80ljBf3r/GriseAmvG
+        1DuDlThM+TdYrKHz463xGwu2Ve1Cgykmd76MOlZ2VZZ3pQXY6uJU/AIAAP//AwCr55FOIgMAAA==
+    headers:
+      CF-RAY:
+      - 92973ec338dc385d-MAD
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 01 Apr 2025 10:01:26 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=4X4f7SlwOEUjTPgnsqtbWu8ub1pFGweYlSK3knfZwNQ-1743501686-1.0.1.1-sZ8oP2JPO53es2K6wjmEkn4dZu0ZX7QPWKUPNHofH5ylaUSavOyxH8zQeGsiDHstoPpir6diSIYlrx9tvqlXl3l4uM3sDm_ZPI55U7cVR2c;
+        path=/; expires=Tue, 01-Apr-25 10:31:26 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=mP63BJ7TxxfshIYwnfeYarUcum3zt_n0V3RhozNxdQU-1743501686905-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      access-control-expose-headers:
+      - X-Request-ID
+      alt-svc:
+      - h3=":443"; ma=86400
+      cf-cache-status:
+      - DYNAMIC
+      openai-organization:
+      - user-c4qiapq5nsn18pakt4nqcpfn
+      openai-processing-ms:
+      - '300'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-ratelimit-limit-requests:
+      - '5000'
+      x-ratelimit-limit-tokens:
+      - '450000'
+      x-ratelimit-remaining-requests:
+      - '4999'
+      x-ratelimit-remaining-tokens:
+      - '449986'
+      x-ratelimit-reset-requests:
+      - 12ms
+      x-ratelimit-reset-tokens:
+      - 1ms
+      x-request-id:
+      - req_672fb56c627a7f8a5fdebab7b7cf01d4
+    status:
+      code: 200
+      message: OK
+version: 1

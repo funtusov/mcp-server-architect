@@ -6,7 +6,6 @@ Entry point for the mcp-server-architect package.
 import argparse
 import logging
 import os
-import sys
 
 import logfire
 from dotenv import load_dotenv
@@ -14,6 +13,7 @@ from mcp.server.fastmcp import FastMCP
 from pydantic_ai import Agent
 
 from mcp_server_architect.core import Architect
+from mcp_server_architect.tools.llm import call_llm_core
 from mcp_server_architect.version import __version__
 
 # Configure logging
@@ -78,16 +78,32 @@ def main():
     else:
         logger.warning("LOGFIRE_API_KEY not found. Logfire instrumentation disabled.")
 
-    # Check for required API key
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        logger.error("GEMINI_API_KEY environment variable is required")
-        sys.exit(1)
+    # Check for API keys required by litellm
+    warnings = []
 
-    # Check for OpenAI API key
+    # Check for OpenAI API key (required for GPT-4o)
     openai_api_key = os.getenv("OPENAI_API_KEY")
     if not openai_api_key:
-        logger.warning("OPENAI_API_KEY environment variable not set. Some functionality may be limited.")
+        warnings.append("OPENAI_API_KEY")
+
+    # Check for Google/Gemini API key
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_api_key:
+        warnings.append("GEMINI_API_KEY")
+
+    # Check for Anthropic API key
+    anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not anthropic_api_key:
+        warnings.append("ANTHROPIC_API_KEY")
+
+    # Check for OpenRouter API key
+    openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+    if not openrouter_api_key:
+        warnings.append("OPENROUTER_API_KEY")
+
+    # Log warnings for missing API keys
+    if warnings:
+        logger.warning(f"The following API keys are not set: {', '.join(warnings)}. Some models will not be available.")
 
     # Set Gemini model from arguments or environment
     os.environ["GEMINI_MODEL"] = args.gemini_model
@@ -129,6 +145,28 @@ def main():
             str: Reasoning guidance and potential solutions
         """
         return architect.think(request, codebase_path)
+    
+    @server.tool()
+    async def llm(prompt: str, model: str = None, temperature: float = None) -> str:
+        """
+        Execute a prompt against a specialized LLM model directly.
+        
+        Args:
+            prompt: The text prompt to send to the LLM
+            model: Optional model identifier (gpt4o, gemini-2.5-pro, claude-3.7-sonnet, deepseek-v3)
+            temperature: Optional temperature setting (0.0-1.0)
+            
+        Returns:
+            The text response from the selected LLM
+            
+        Available models:
+        - gpt4o (DEFAULT): OpenAI's GPT-4o - Excellent for reasoning, coding, and creative tasks
+        - gemini-2.5-pro: Google's Gemini 2.5 Pro - Great for technical content and structured reasoning
+        - claude-3.7-sonnet: Anthropic's Claude - Superior for detailed analysis and careful reasoning
+        - deepseek-v3: DeepSeek - Specialized for coding and technical problem-solving
+        """
+        logger.info(f"Direct LLM call via MCP: model={model}, prompt_length={len(prompt)}")
+        return await call_llm_core(prompt, model, temperature)
 
     # Start the MCP server
     logger.info(f"Starting Architect MCP server v{__version__}...")

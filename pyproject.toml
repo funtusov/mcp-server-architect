@@ -19,6 +19,9 @@ dependencies = [
     "requests",
     "exa-py",
     "logfire>=3.11.0",
+    "litellm>=1.65.0",
+    "anthropic>=0.49.0",
+    "httpx>=0.28.1",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -72,8 +75,13 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
 filterwarnings = [
+    # Project dependency warnings
     "ignore::DeprecationWarning:pydantic.*:",
-    "ignore::pydantic.PydanticDeprecatedSince20::"
+    "ignore::pydantic.PydanticDeprecatedSince20::",
+    
+    # Third-party dependency warnings we can't fix
+    "ignore:open_text is deprecated.*:DeprecationWarning:litellm.*:",
+    "ignore:Use 'content=<...>' to upload raw bytes/text content.:DeprecationWarning:httpx.*:"
 ]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"

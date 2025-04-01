@@ -274,7 +274,7 @@ The tests use pytest-recording to record HTTP interactions with APIs. By default
 
 ```bash
 # Force rewrite of API recordings
-pytest --record-mode=rewrite
+pytest tests/ --record-mode=all
 ```
 
 For more details about testing, see [tests/README.md](tests/README.md).

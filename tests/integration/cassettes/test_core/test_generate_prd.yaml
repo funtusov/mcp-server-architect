@@ -1,20 +1,25 @@
 interactions:
 - request:
-    body: '{"contents":[{"role":"user","parts":[{"text":"Generate a PRD for the following
-      task: Create a simple calculator app with basic operations"}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
-      are an expert software architect and technical lead.\n        \n        Your
-      task is to create a Product Requirements Document (PRD) or High-Level Design
-      Document based on the \n        user''s request and any code context you gather
-      using your tools.\n        \n        IMPORTANT: Before beginning any analysis,
-      use the code_reader tool to examine the codebase structure\n        and understand
-      the existing architecture.\n        \n        Your PRD should include:\n        1.
-      Overview of the requested feature/task\n        2. Technical requirements and
-      constraints\n        3. Proposed architecture/design\n        4. Implementation
-      plan with specific files to modify\n        5. Potential challenges and mitigations\n        \n        You
-      have access to the following tool:\n        - code_reader: Read source code
-      files from the codebase to understand the architecture\n        \n        Format
-      your response in markdown. Be concise but comprehensive.\n        Use your tools
-      strategically to gather all the information you need.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
+    body: '{"contents":[{"role":"user","parts":[{"text":"\n            Create a Product
+      Requirements Document (PRD) or High-Level Design Document based on the following
+      task.\n            \n            IMPORTANT: Before beginning analysis, use the
+      code_reader tool to examine the codebase structure\n            and understand
+      the existing architecture.\n            \n            Your PRD should include:\n            1.
+      Overview of the requested feature/task\n            2. Technical requirements
+      and constraints\n            3. Proposed architecture/design\n            4.
+      Implementation plan with specific files to modify\n            5. Potential
+      challenges and mitigations\n            \n            Task details: Create a
+      simple calculator app with basic operations\n            "}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
+      are an expert software architect and technical lead with deep expertise in software
+      design and development.\n        \n        You can provide several types of
+      assistance:\n        1. Create Product Requirements Documents (PRDs) or High-Level
+      Design Documents\n        2. Analyze code and architecture\n        3. Provide
+      deep reasoning assistance and solutions for complex coding problems\n        \n        Use
+      the tools strategically to gather all the information you need:\n        - code_reader:
+      Read source code files from the codebase to understand the architecture\n        -
+      web_search: Find relevant technical information online\n        - llm: Use external
+      LLM assistance when needed\n        \n        Format your responses in markdown.
+      Be concise but thorough.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
       and analyze source code files from the specified codebase path, combining them\ninto
       a unified code context for the agent to analyze.</summary>\n<returns>\n<description>A
       string containing the code context or error message</description>\n</returns>","parameters":{"description":"Input
@@ -24,10 +29,10 @@ interactions:
       string containing the search results or error message</description>\n</returns>","parameters":{"description":"Input
       schema for the web search tool.","properties":{"query":{"description":"The search
       query to execute","type":"string"},"num_results":{"type":"integer","nullable":true}},"required":["query"],"type":"object"}},{"name":"llm","description":"<summary>Execute
-      a prompt against a configured LLM.</summary>\n<returns>\n<description>The text
-      response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
+      a prompt against a configured LLM using litellm.</summary>\n<returns>\n<description>The
+      text response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
       schema for the LLM tool.","properties":{"prompt":{"description":"The prompt
-      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true},"max_tokens":{"type":"integer","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
+      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
     headers:
       accept:
       - '*/*'
@@ -36,27 +41,25 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '2977'
+      - '3321'
       content-type:
       - application/json
       host:
       - generativelanguage.googleapis.com
       user-agent:
-      - pydantic-ai/0.0.46
+      - pydantic-ai/0.0.48
     method: POST
     uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAC/3VTwW7bMAy9+ysIXXpxgiJD1q2XHdoOyGFo0QXDgLVYWZlJtMiSIdFogiD/Pkpu
-        EidtcwjsR/Lx8ZHeFABKo6tMhUxRXcIfQQA2+T/FvGNyLIEdJGCDgQ+53W/Te5YUplUqUrdLXJdg
-        ic8i6EDSBBDu7q9h5gPwgiCaurEEGq1uLbKg2DTDB/fgvpsQuYQJOKIK2EPrKhJI1ObKLG3FQ5hE
-        eTdRiB29pHJrNLLxroREFwhepGtVGTcHw4kJHdDKRE6I9hU9Y6RvMDmzFtpImf0p4X9FsfR8khpv
-        U6FekF7meBP8P9IMkUOruQ007OpFX2B4XoP1fpn4kXN+8J6hMkFqfFjnAVXPsm35sZez1uk0zhVa
-        e7SI17jDmpLXPcWqPE3CMI/vFOdt8uJ0m/vgUL1BH0+QbfHR2+H58aBHBW+z3Frk2h39fn41M87E
-        xT1h9C6l/Zze3u3HUUZuYCXwebFrkKlVG3FOP4hR7hj3cyrZUt3w1C/JXfk23/H466hj6939UcKX
-        8WucPaM9Cn2+uCjfEMdraWts38LetyJTojW8TqNMb35Pe5uRBse6dl4UO5uzK51Rv+T0TefInGrx
-        aDAajgciY0CrZnD+aTAaq2Jb/AdBSFV30QMAAA==
+        H4sIAAAAAAAC/3WSTW+CQBCG7/yKzV56EWM0eujV9tjYtKRpUo0ZYcSNyy7ZHRKM8b93QEGgdQ9k
+        mXc+n51zIISMwSQqAUIvn8UPW4Q4199Ks4bQEAuNiY05OLr7Xs+5c2cXwrIKkqsjnEZCIz154Ynj
+        xO4ksIRMGWVSQQcUsU1wBx5Zd0VMhcPx2qyN7CS8jB5X2hcmJmXNErTutXnTDWRYdVKV2TqEBJ0c
+        DZ3Apf6fYFYyKLd7pWs208kwsIZBhyGMVhzLP9bNwHIJHv3d75t7XemsrufJeB7dpG8ByT2D9YcP
+        BG9N5fYZrd7beaUyCZZsngRNgTq1LDyk+IYEvAbQgpC5s1lOkT2iWdqiXoPF7AahszY9h9nippMl
+        0P3YRaN1EvsXLqt0F2Fn1XhK0IpO1SjR63fUeTou0O+rYRE0mGsqV1Bf6Ly6EkmxWr5wOp6H3EaI
+        ZR5OZuF0LoNL8AuqIyKTEAMAAA==
     headers:
       Alt-Svc:
       - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
@@ -65,11 +68,11 @@ interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 29 Mar 2025 16:20:04 GMT
+      - Tue, 01 Apr 2025 08:59:40 GMT
       Server:
       - scaffolding on HTTPServer2
       Server-Timing:
-      - gfet4t7; dur=40347
+      - gfet4t7; dur=5218
       Transfer-Encoding:
       - chunked
       Vary:
@@ -86,28 +89,30 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"contents":[{"role":"user","parts":[{"text":"Generate a PRD for the following
-      task: Create a simple calculator app with basic operations"}]},{"role":"model","parts":[{"text":"Okay,
-      let''s create a PRD for the simple calculator app.\n\nFirst, I need to understand
-      the context. Is this a new application, or are we adding it to an existing codebase?
-      I''ll use the `code_reader` tool to check the project structure. I''ll start
-      by looking at the root directory.\n\n"},{"functionCall":{"name":"code_reader","args":{"paths":["."]}}}]},{"role":"user","parts":[{"functionResponse":{"name":"code_reader","response":{"return_value":"#
+    body: '{"contents":[{"role":"user","parts":[{"text":"\n            Create a Product
+      Requirements Document (PRD) or High-Level Design Document based on the following
+      task.\n            \n            IMPORTANT: Before beginning analysis, use the
+      code_reader tool to examine the codebase structure\n            and understand
+      the existing architecture.\n            \n            Your PRD should include:\n            1.
+      Overview of the requested feature/task\n            2. Technical requirements
+      and constraints\n            3. Proposed architecture/design\n            4.
+      Implementation plan with specific files to modify\n            5. Potential
+      challenges and mitigations\n            \n            Task details: Create a
+      simple calculator app with basic operations\n            "}]},{"role":"model","parts":[{"text":"Okay,
+      let''s start by examining the codebase structure.\n\n"},{"functionCall":{"name":"code_reader","args":{"max_files":20,"paths":["."]}}}]},{"role":"user","parts":[{"functionResponse":{"name":"code_reader","response":{"return_value":"#
       Code Context\nIncluding 1 files from the specified paths.\n\n# File: main.py\n```\n\ndef
       add(a, b):\n    \"\"\"Add two numbers.\"\"\"\n    return a + b\n\ndef subtract(a,
       b):\n    \"\"\"Subtract b from a.\"\"\"\n    return a - b\n\n```\n\n"}}}]}],"system_instruction":{"role":"user","parts":[{"text":"\n        You
-      are an expert software architect and technical lead.\n        \n        Your
-      task is to create a Product Requirements Document (PRD) or High-Level Design
-      Document based on the \n        user''s request and any code context you gather
-      using your tools.\n        \n        IMPORTANT: Before beginning any analysis,
-      use the code_reader tool to examine the codebase structure\n        and understand
-      the existing architecture.\n        \n        Your PRD should include:\n        1.
-      Overview of the requested feature/task\n        2. Technical requirements and
-      constraints\n        3. Proposed architecture/design\n        4. Implementation
-      plan with specific files to modify\n        5. Potential challenges and mitigations\n        \n        You
-      have access to the following tool:\n        - code_reader: Read source code
-      files from the codebase to understand the architecture\n        \n        Format
-      your response in markdown. Be concise but comprehensive.\n        Use your tools
-      strategically to gather all the information you need.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
+      are an expert software architect and technical lead with deep expertise in software
+      design and development.\n        \n        You can provide several types of
+      assistance:\n        1. Create Product Requirements Documents (PRDs) or High-Level
+      Design Documents\n        2. Analyze code and architecture\n        3. Provide
+      deep reasoning assistance and solutions for complex coding problems\n        \n        Use
+      the tools strategically to gather all the information you need:\n        - code_reader:
+      Read source code files from the codebase to understand the architecture\n        -
+      web_search: Find relevant technical information online\n        - llm: Use external
+      LLM assistance when needed\n        \n        Format your responses in markdown.
+      Be concise but thorough.\n        "}]},"tools":{"function_declarations":[{"name":"code_reader","description":"<summary>Read
       and analyze source code files from the specified codebase path, combining them\ninto
       a unified code context for the agent to analyze.</summary>\n<returns>\n<description>A
       string containing the code context or error message</description>\n</returns>","parameters":{"description":"Input
@@ -117,10 +122,10 @@ interactions:
       string containing the search results or error message</description>\n</returns>","parameters":{"description":"Input
       schema for the web search tool.","properties":{"query":{"description":"The search
       query to execute","type":"string"},"num_results":{"type":"integer","nullable":true}},"required":["query"],"type":"object"}},{"name":"llm","description":"<summary>Execute
-      a prompt against a configured LLM.</summary>\n<returns>\n<description>The text
-      response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
+      a prompt against a configured LLM using litellm.</summary>\n<returns>\n<description>The
+      text response from the LLM or an error message</description>\n</returns>","parameters":{"description":"Input
       schema for the LLM tool.","properties":{"prompt":{"description":"The prompt
-      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true},"max_tokens":{"type":"integer","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
+      to send to the LLM","type":"string"},"model":{"type":"string","nullable":true},"temperature":{"type":"number","nullable":true}},"required":["prompt"],"type":"object"}}]}}'
     headers:
       accept:
       - '*/*'
@@ -129,68 +134,61 @@ interactions:
       connection:
       - keep-alive
       content-length:
-      - '3705'
+      - '3838'
       content-type:
       - application/json
       host:
       - generativelanguage.googleapis.com
       user-agent:
-      - pydantic-ai/0.0.46
+      - pydantic-ai/0.0.48
     method: POST
     uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent
   response:
     body:
       string: !!binary |
-        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
+        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
+        RkeMCNSibHzwanx4NHj25dl/AbVdV4FsHAAA
     headers:
       Alt-Svc:
       - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
@@ -199,11 +197,11 @@ interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 29 Mar 2025 16:20:34 GMT
+      - Tue, 01 Apr 2025 08:59:57 GMT
       Server:
       - scaffolding on HTTPServer2
       Server-Timing:
-      - gfet4t7; dur=29822
+      - gfet4t7; dur=16917
       Transfer-Encoding:
       - chunked
       Vary:

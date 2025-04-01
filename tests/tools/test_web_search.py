@@ -7,18 +7,22 @@ import asyncio
 import os
 
 import pytest
+from pydantic_ai import RunContext
 
 from mcp_server_architect.tools.web_search import WebSearchInput
 from mcp_server_architect.tools.web_search import web_search as web_search_fn
 from mcp_server_architect.types import ArchitectDependencies
 
 
-class MockRunContext:
-    """Mock RunContext class for testing."""
-
-    def __init__(self, api_key):
-        """Initialize with just the necessary attributes."""
-        self.deps = ArchitectDependencies(codebase_path="", api_keys={"web_search": api_key})
+def create_run_context(api_key):
+    """Create a real RunContext for testing."""
+    return RunContext(
+        deps=ArchitectDependencies(codebase_path="", api_keys={"web_search": api_key}),
+        model="gpt-4o",
+        usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+        prompt="test prompt",
+        retry=0
+    )
 
 
 @pytest.mark.vcr(
@@ -33,8 +37,8 @@ def test_web_search_basic():
     if not exa_key:
         raise RuntimeError("EXA_API_KEY environment variable is required for web search tests")
 
-    # Create a simple mock context
-    context = MockRunContext(exa_key)
+    # Create a real RunContext
+    context = create_run_context(exa_key)
 
     # Create search input
     search_input = WebSearchInput(query="What is the Model Context Protocol", num_results=3)
@@ -68,8 +72,8 @@ def test_web_search_technical():
     if not exa_key:
         raise RuntimeError("EXA_API_KEY environment variable is required for web search tests")
 
-    # Create a simple mock context
-    context = MockRunContext(exa_key)
+    # Create a real RunContext
+    context = create_run_context(exa_key)
 
     # Create search input for technical query
     search_input = WebSearchInput(query="PydanticAI agent pattern implementation example", num_results=2)

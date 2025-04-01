@@ -13,11 +13,7 @@
 For a complete guide on building, testing, and publishing new versions, see [PUBLISH.md](PUBLISH.md) for detailed step-by-step instructions.
 
 ## Testing
-- Only run `test_build.sh` before publishing OR when explicitly requested
-- The test script makes API calls to Gemini which:
-  - Incurs API costs
-  - Is slow (30+ seconds)
-  - Should not be run routinely during development
+- Run the pytest integration tests when developing and before publishing
 - For normal development, use linting to check code quality: `ruff check .`
 
 ### Integration Tests Best Practices
@@ -27,9 +23,9 @@ For a complete guide on building, testing, and publishing new versions, see [PUB
   ```bash
   uv run pytest tests/ -v
   ```
-- To record new cassettes:
+- To rewrite all cassettes:
   ```bash
-  uv run pytest tests/ --record-mode=rewrite
+  uv run pytest tests/ --record-mode=all
   ```
 - Remember to check cassettes into source control but filter sensitive data
 
